@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+{{CSS}}
+.hero img{max-height:250px;width:100%;object-fit:contain;background:#fff}
+.back{font-weight:900;color:#2e526f;text-decoration:none;display:inline-block;margin-bottom:8px}
+.picbtn img,.mcard img{background:#fff}
+@media(max-width:760px){.hero img{max-width:100%}}
+</style>
+</head>
+<body>
+<div class="shell">
+<a class="back" href="../../">← All lessons</a>
+<header class="hero">
+ <div>
+  <div class="kicker">English for International School · Lesson {{ID}}</div>
+  <h1>{{TITLE}}</h1>
+  <p id="intro"></p>
+  <span class="pill" id="pillWords"></span><span class="pill">📖 1 story</span><span class="pill">🎮 7 games</span>
+  <div class="stars" id="stars" aria-label="Stars won"></div>
+ </div>
+ <img src="{{HERO}}" alt="Max and Leo">
+</header>
+
+<nav class="nav" aria-label="Lesson parts">
+ <button data-tab="words" class="active">1 · Words</button>
+ <button data-tab="story">2 · Story</button>
+ <button data-tab="play">3 · Games</button>
+ <button data-tab="cards">4 · Flashcards</button>
+ <button data-tab="finish">5 · Finish</button>
+</nav>
+
+<main>
+<section class="pane active" id="words"><div class="section">
+ <h2>👀 Look, listen and repeat</h2>
+ <p class="lead">Нажми на карточку — услышишь слово. Повтори вслух!</p>
+ <div class="vocab" id="vocabMain"></div>
+ <div class="bonus" id="bonusBox"><h3>⭐ Bonus words</h3><div class="vocab" id="vocabBonus"></div></div>
+ <p><button class="btn primary" data-go="story">Next: Read the story →</button></p>
+</div></section>
+
+<section class="pane" id="story"><div class="section">
+ <h2 id="storyTitle"></h2>
+ <p class="lead">Прочитай рассказ вслух. Найди новые слова на картинках. <button class="btn soft" id="readStory">🔊 Listen to the story</button></p>
+ <div class="story-wrap">
+  <div class="story" id="storyText"></div>
+  <div class="panels" id="panels"></div>
+ </div>
+ <p><button class="btn primary" data-go="play">Next: Games →</button></p>
+</div></section>
+
+<section class="pane" id="play"><div class="section">
+ <h2>🎮 Games</h2>
+ <p class="lead">7 игр — за каждую звезда ⭐. Ошибся? Ничего страшного, пробуй ещё!</p>
+ <div class="progress"><span id="score">0 / 7 games</span><span class="track"><span class="fill" id="bar" style="display:block"></span></span><button class="btn soft" id="resetAll">↻ Start again</button></div>
+
+ <article class="task" id="t1">
+  <h3>1 · Listen and click</h3><p class="hint">Послушай слово и нажми на правильную картинку.</p>
+  <div class="progress"><span id="t1count"></span></div>
+  <p><button class="btn primary bigplay" id="t1play">🔊 Listen</button></p>
+  <div class="picgrid" id="t1grid"></div>
+  <div class="feedback" id="t1fb" aria-live="polite"></div>
+ </article>
+
+ <article class="task" id="t2">
+  <h3>2 · Match the words with the pictures</h3><p class="hint">Нажми на слово, потом на картинку.</p>
+  <div class="options" id="t2words"></div>
+  <div class="matchgrid" id="t2grid"></div>
+  <div class="feedback" id="t2fb" aria-live="polite"></div>
+ </article>
+
+ <article class="task" id="t3">
+  <h3>3 · Spell it!</h3><p class="hint">Собери слово из букв.</p>
+  <div class="progress"><span id="t3count"></span></div>
+  <div class="spellrow"><img id="t3img" alt="picture"><div><div class="slots" id="t3slots"></div><div class="options" id="t3tiles"></div><button class="btn soft" id="t3back">⌫ Back</button> <button class="btn soft" id="t3say">🔊 Hint</button></div></div>
+  <div class="feedback" id="t3fb" aria-live="polite"></div>
+ </article>
+
+ <article class="task" id="t4">
+  <h3>4 · Choose the correct word</h3><p class="hint">Выбери слово, которое подходит.</p>
+  <div id="t4rows"></div>
+  <div class="feedback" id="t4fb" aria-live="polite"></div>
+ </article>
+
+ <article class="task" id="t5">
+  <h3 id="t5title">5 · True or False?</h3><p class="hint">Вспомни рассказ. Можно вернуться на вкладку Story.</p>
+  <div id="t5rows"></div>
+  <div class="feedback" id="t5fb" aria-live="polite"></div>
+ </article>
+
+ <article class="task" id="t6">
+  <h3>6 · Odd one out</h3><p class="hint">Какое слово лишнее? Нажми на него.</p>
+  <div id="t6rows"></div>
+  <div class="feedback" id="t6fb" aria-live="polite"></div>
+ </article>
+
+ <article class="task" id="t7">
+  <h3>7 · Make a sentence</h3><p class="hint">Нажимай на слова по порядку и составь предложение.</p>
+  <div id="t7rows"></div>
+  <div class="feedback" id="t7fb" aria-live="polite"></div>
+ </article>
+
+ <p><button class="btn primary" data-go="cards">Next: Flashcards →</button></p>
+</div></section>
+
+<section class="pane" id="cards"><div class="section">
+ <h2>🃏 Flip the card</h2>
+ <p class="lead">Посмотри на картинку и скажи слово по-английски. Переверни карточку и проверь себя.</p>
+ <div class="flashgrid">
+  <div>
+   <button class="flash" id="flash" aria-label="Flip the card"><img id="fimg" alt=""><div class="en" id="fword"></div><small id="fhint"></small></button>
+   <div class="ctl"><button class="btn soft" id="fprev">← Back</button><button class="btn primary" id="fflip">↻ Flip</button><button class="btn soft" id="fnext">Next →</button><button class="btn soft" id="fsay">🔊</button></div>
+  </div>
+  <div>
+   <h3 id="fcount"></h3>
+   <p>⭐ Say the word, then make a sentence with it:</p>
+   <p id="fframes"></p>
+   <label id="fbonusLab"><input type="checkbox" id="fbonus" checked> Show bonus words too</label>
+  </div>
+ </div>
+ <p><button class="btn primary" data-go="finish">Finish →</button></p>
+</div></section>
+
+<section class="pane" id="finish"><div class="section">
+ <div class="trophy"><div class="big" id="trophyIcon">🏆</div><h2 id="trophyText"></h2><div class="stars" id="stars2"></div></div>
+
+ <div class="task">
+  <h3 id="gameTitle"></h3>
+  <p class="hint" id="gameHint"></p>
+  <div class="says" id="says"></div>
+  <p style="text-align:center"><button class="btn primary bigplay" id="saysBtn">🎲 Next</button></p>
+ </div>
+
+ <div class="task">
+  <h3>💬 Let's talk!</h3>
+  <ul class="qlist" id="talk"></ul>
+ </div>
+
+ <div class="task">
+  <h3>✏️ Homework</h3>
+  <p>Сделай онлайн-домашку: <a href="homework.html"><b>Homework {{ID}} →</b></a></p>
+  <p id="paperHw"></p>
+ </div>
+
+ <details class="section teacher">
+  <summary>👩‍🏫 For the teacher</summary>
+  <div id="teacher"></div>
+ </details>
+ <p><button class="btn soft" data-go="words">↺ Back to the words</button></p>
+</div></section>
+</main>
+<footer>Makar &amp; Matvey · English for International School · Lesson {{ID}} {{TITLE}}</footer>
+</div>
+
+<script>
+const IMG={{IMGS}};
+const PANELS={{PANELS}};
+const D={{DATA}};
+{{TTS}}
+const W=D.words, CORE=W.filter(w=>!w.bonus);
+const key=w=>w.en.replace(/ /g,'_');
+const pic=w=>IMG[key(w)];
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const md=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+
+/* page text */
+$('intro').textContent=D.intro;
+$('pillWords').textContent=W.length>CORE.length?`🧩 ${CORE.length} + ${W.length-CORE.length} words`:`🧩 ${CORE.length} words`;
+$('storyTitle').textContent='📖 '+D.storyTitle;
+$('storyText').innerHTML=D.story.map(p=>`<p>${md(p)}</p>`).join('');
+$('panels').innerHTML=PANELS.map((s,i)=>`<img src="${s}" alt="Story picture ${i+1}">`).join('');
+$('t5title').textContent='5 · '+D.storyTitle+': True or False?';
+$('fframes').innerHTML=D.frames.map(f=>`<b>${esc(f)}</b>`).join(' · ');
+$('gameTitle').textContent=D.game.title;$('gameHint').textContent=D.game.hint;
+$('talk').innerHTML=D.talk.map(q=>`<li>${esc(q)}</li>`).join('');
+$('paperHw').textContent=D.paper;
+$('teacher').innerHTML=D.teacher.map(p=>`<p>${md(p)}</p>`).join('');
+if(W.length===CORE.length){$('bonusBox').remove();$('fbonusLab').remove()}
+
+/* tabs */
+function showTab(t){document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('active',p.id===t));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>showTab(b.dataset.go));
+
+/* words */
+function card(w){const b=document.createElement('button');b.className='word';b.innerHTML=`<img src="${pic(w)}" alt=""><strong>${esc(w.en)}</strong><div class="ru">${esc(w.ru)}</div>`;b.onclick=()=>say(w.en,.7);return b}
+W.forEach(w=>{const box=$(w.bonus?'vocabBonus':'vocabMain');if(box)box.appendChild(card(w))});
+$('readStory').onclick=()=>say($('storyText').innerText,.82);
+
+/* stars */
+const TOTAL=7;const done=new Set();
+function renderStars(){const s=[...Array(TOTAL)].map((_,i)=>`<span class="${i<done.size?'on':'off'}">⭐</span>`).join('');$('stars').innerHTML=s;$('stars2').innerHTML=s;$('score').textContent=`${done.size} / ${TOTAL} games`;$('bar').style.width=(done.size/TOTAL*100)+'%';
+ $('trophyIcon').textContent=done.size===TOTAL?'🏆':done.size>=4?'🥈':'💪';
+ $('trophyText').textContent=done.size===TOTAL?'Well done, Makar and Matvey! All 7 stars!':done.size?`Great work! ${done.size} of ${TOTAL} stars. Can you win them all?`:'Play the games and win 7 stars!'}
+function win(n,msg){done.add(n);$('t'+n).classList.add('done');fb(n,true,msg||'⭐ Super! You won a star!');renderStars()}
+function fb(n,ok,msg){const e=$('t'+n+'fb');e.textContent=msg;e.className='feedback '+(ok?'ok':'no')}
+function flash(el,ok){el.classList.remove('good','bad');void el.offsetWidth;el.classList.add(ok?'good':'bad');if(!ok)setTimeout(()=>el.classList.remove('bad'),600)}
+
+/* T1 listen and click */
+let t1={order:[],i:0,right:0,miss:false};
+function t1start(){t1={order:shuffle(CORE),i:0,right:0,miss:false};$('t1').classList.remove('done');fb(1,true,'');t1round()}
+function t1round(){const g=$('t1grid');g.innerHTML='';const N=t1.order.length;if(t1.i>=N){$('t1count').textContent=`${N} / ${N}`;win(1,`⭐ Done! ${t1.right} of ${N} right the first time.`);return}
+ const w=t1.order[t1.i];$('t1count').textContent=`${t1.i+1} / ${N}`;t1.miss=false;
+ const opts=shuffle([w,...shuffle(CORE.filter(x=>x!==w)).slice(0,3)]);
+ opts.forEach(o=>{const b=document.createElement('button');b.className='picbtn';b.dataset.w=o.en;b.innerHTML=`<img src="${pic(o)}" alt="picture">`;b.setAttribute('aria-label','picture');b.onclick=()=>{if(o===w){flash(b,true);if(!t1.miss)t1.right++;fb(1,true,`✅ Yes! ${w.en}`);t1.i++;setTimeout(()=>{t1round();say(t1.order[t1.i]?t1.order[t1.i].en:'Well done!')},800)}else{t1.miss=true;flash(b,false);fb(1,false,'Try again! Listen once more.');say(w.en,.7)}};g.appendChild(b)})}
+$('t1play').onclick=()=>{const w=t1.order[t1.i];if(w)say(w.en,.7)};
+
+/* T2 match */
+let t2sel=null,t2left=0;
+function t2start(){$('t2').classList.remove('done');fb(2,true,'');t2sel=null;const items=CORE;t2left=items.length;const ws=$('t2words'),g=$('t2grid');ws.innerHTML='';g.innerHTML='';
+ shuffle(items).forEach(w=>{const c=document.createElement('button');c.className='chip';c.textContent=w.en;c.onclick=()=>{ws.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');t2sel={w,c};say(w.en)};ws.appendChild(c)});
+ shuffle(items).forEach(w=>{const m=document.createElement('button');m.className='mcard';m.dataset.w=w.en;m.innerHTML=`<img src="${pic(w)}" alt="picture"><div class="lab"></div>`;m.onclick=()=>{if(!t2sel||m.dataset.ok)return;if(t2sel.w===w){m.dataset.ok=1;flash(m,true);m.querySelector('.lab').textContent=w.en;t2sel.c.classList.add('used');t2sel=null;t2left--;fb(2,true,'✅ Correct!');if(!t2left)win(2)}else{flash(m,false);fb(2,false,'Not this one. Try again!')}};g.appendChild(m)})}
+
+/* T3 spell */
+let t3={i:0,built:[],list:[]};
+function t3start(){t3={i:0,built:[],list:shuffle(D.spell)};$('t3').classList.remove('done');fb(3,true,'');t3round()}
+function t3round(){if(t3.i>=t3.list.length){win(3);return}const word=t3.list[t3.i];t3.built=[];$('t3count').textContent=`${t3.i+1} / ${t3.list.length}`;$('t3img').src=IMG[word.replace(/ /g,'_')];
+ const tiles=$('t3tiles');tiles.innerHTML='';let letters=shuffle(word.split(''));if(letters.join('')===word)letters=letters.reverse();
+ letters.forEach(l=>{const b=document.createElement('button');b.className='btn tile';b.textContent=l;b.onclick=()=>{b.disabled=true;b.style.visibility='hidden';t3.built.push({l,b});t3draw(word)};tiles.appendChild(b)});t3draw(word)}
+function t3draw(word){$('t3slots').innerHTML=word.split('').map((_,k)=>`<div class="slot">${t3.built[k]?t3.built[k].l:''}</div>`).join('');
+ if(t3.built.length===word.length){const got=t3.built.map(x=>x.l).join('');if(got===word){fb(3,true,`✅ ${word}!`);say(word);t3.i++;setTimeout(t3round,900)}else{fb(3,false,'Almost! Press ⌫ and try again.')}}}
+$('t3back').onclick=()=>{const x=t3.built.pop();if(x){x.b.disabled=false;x.b.style.visibility='visible';t3draw(t3.list[t3.i]);fb(3,true,'')}};
+$('t3say').onclick=()=>{const w=t3.list&&t3.list[t3.i];if(w)say(w,.6)};
+
+/* rows helper */
+function rows(n,data,render){const box=$('t'+n+'rows');box.innerHTML='';$('t'+n).classList.remove('done');fb(n,true,'');let left=data.length;
+ data.forEach((d,i)=>{const r=document.createElement('div');r.className='row';box.appendChild(r);render(d,i,r,()=>{left--;if(!left)win(n)})})}
+
+/* T4 choose */
+function t4start(){rows(4,D.choose,([a,b,opts,ans],i,r,ok)=>{r.innerHTML=`<span class="num">${i+1}</span><span>${esc(a)}</span><span class="blank">&nbsp;</span><span>${esc(b)}</span>`;const o=document.createElement('span');o.className='options';o.style.margin='0';
+ shuffle(opts).forEach(x=>{const btn=document.createElement('button');btn.className='opt';btn.textContent=x;btn.onclick=()=>{if(r.dataset.ok)return;if(x===ans){r.dataset.ok=1;flash(btn,true);r.querySelector('.blank').textContent=ans;say(`${a} ${ans} ${b}`);ok()}else{flash(btn,false);fb(4,false,'Hmm, think again!')}};o.appendChild(btn)});r.appendChild(o)})}
+
+/* T5 true/false */
+function t5start(){rows(5,D.tf,([s,v,why],i,r,ok)=>{r.innerHTML=`<span class="num">${i+1}</span><span style="flex:1">${esc(s)}</span>`;[['True',true],['False',false]].forEach(([lab,val])=>{const b=document.createElement('button');b.className='opt';b.textContent=lab;b.onclick=()=>{if(r.dataset.ok)return;if(val===v){r.dataset.ok=1;flash(b,true);fb(5,true,v?'✅ Yes, true!':'✅ Right! '+why);ok()}else{flash(b,false);fb(5,false,'Look at the story again!')}};r.appendChild(b)})})}
+
+/* T6 odd one out */
+function t6start(){rows(6,D.odd,([opts,ans,why],i,r,ok)=>{r.innerHTML=`<span class="num">${i+1}</span>`;shuffle(opts).forEach(x=>{const b=document.createElement('button');b.className='opt';b.textContent=x;b.onclick=()=>{if(r.dataset.ok)return;if(x===ans){r.dataset.ok=1;flash(b,true);fb(6,true,'✅ Yes! '+why);ok()}else{flash(b,false);fb(6,false,`No — ${x} is a ${D.oddGroup}!`)}};r.appendChild(b)})})}
+
+/* T7 order */
+function t7start(){rows(7,D.order,(sent,i,r,ok)=>{const toks=sent.split(' ');let picked=[];const seed=shuffle(toks.map((t,k)=>k));if(seed.every((k,j)=>k===j))seed.reverse();r.innerHTML=`<span class="num">${i+1}</span>`;const src=document.createElement('span');src.className='options';src.style.margin='0';const built=document.createElement('div');built.className='built';r.append(src,built);
+ function draw(){src.innerHTML='';built.innerHTML='';
+  seed.forEach(k=>{if(picked.includes(k))return;const c=document.createElement('button');c.className='chip';c.textContent=toks[k];c.onclick=()=>{if(r.dataset.ok)return;picked.push(k);draw();check()};src.appendChild(c)});
+  picked.forEach((k,j)=>{const c=document.createElement('button');c.className='chip'+(r.dataset.ok?' good':'');c.textContent=toks[k];c.onclick=()=>{if(r.dataset.ok)return;picked.splice(j,1);draw()};built.appendChild(c)})}
+ function check(){if(picked.length<toks.length)return;const s=picked.map(k=>toks[k]).join(' ');if(s===sent){r.dataset.ok=1;draw();say(sent);fb(7,true,'✅ '+sent+'!');ok()}else{fb(7,false,'Almost! Tap a word below to take it back.')}}
+ draw()})}
+
+function startAll(){done.clear();document.querySelectorAll('.task').forEach(t=>t.classList.remove('done'));t1start();t2start();t3start();t4start();t5start();t6start();t7start();renderStars()}
+$('resetAll').onclick=startAll;startAll();
+
+/* flashcards */
+let fi=0,back=false;const deck=()=>($('fbonus')&&$('fbonus').checked)?W:CORE;
+function fdraw(){const d=deck();fi=(fi+d.length)%d.length;const w=d[fi];$('fimg').src=pic(w);const e=$('fword');if(back){e.textContent=`${w.en} — ${w.ru}`;e.className='ruw'}else{e.textContent='?';e.className='en'}$('fhint').textContent=back?'Next card →':'Say it in English, then tap ↻';$('fcount').textContent=`Card ${fi+1} of ${d.length}`}
+function fflip(){back=!back;fdraw();if(back)say(deck()[fi].en)}
+$('flash').onclick=fflip;$('fflip').onclick=fflip;$('fnext').onclick=()=>{fi++;back=false;fdraw()};$('fprev').onclick=()=>{fi--;back=false;fdraw()};$('fsay').onclick=()=>say(deck()[fi].en);if($('fbonus'))$('fbonus').onchange=()=>{fi=0;back=false;fdraw()};fdraw();
+
+/* finish game */
+let gLast=-1;
+$('saysBtn').onclick=()=>{let i;do{i=Math.floor(Math.random()*D.game.phrases.length)}while(i===gLast&&D.game.phrases.length>1);gLast=i;const t=D.game.phrases[i];$('says').textContent=t;say(t,.85)};
+</script>
+</body>
+</html>

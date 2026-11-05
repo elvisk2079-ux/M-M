@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homework {{ID}} · {{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+{{HWCSS}}
+.item select{font:inherit;font-weight:900;border:2px solid #e8d9b3;border-radius:12px;padding:5px 8px;background:#fffdf7}
+.gloss{color:#66758b;font-size:15px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="shell">
+<a class="back" href="../../">← All lessons</a> · <a class="back" href="./">Lesson {{ID}}</a>
+<header class="hero">
+ <div class="kicker">Homework · Lesson {{ID}}</div>
+ <h1>{{TITLE}}: Homework</h1>
+ <p>Hi, Makar and Matvey! Today you write the words yourselves. No buttons to guess — think, remember and write! A star for every task.</p>
+ <div class="stars" id="stars"></div>
+</header>
+
+<article class="task" data-task="listen">
+ <h2>1 · Listen and write</h2>
+ <p class="lead">Нажми 🔊, послушай слово и напиши его. Ошибка — появится подсказка (первая буква).</p>
+ <div class="grid" id="t1"></div>
+ <div class="row"><button class="btn" id="t1c">Check</button><span class="feedback" id="t1f"></span></div>
+</article>
+
+<article class="task" data-task="look">
+ <h2>2 · Look and write</h2>
+ <p class="lead">Что на картинке? Напиши слово. Точки показывают, сколько букв.</p>
+ <div class="grid" id="t2"></div>
+ <div class="row"><button class="btn" id="t2c">Check</button><span class="feedback" id="t2f"></span></div>
+</article>
+
+<article class="task" data-task="riddles">
+ <h2>3 · Riddles</h2>
+ <p class="lead">Отгадай загадку и напиши слово по-английски. 🔊 — послушать загадку.</p>
+ <div class="list" id="t3"></div>
+ <div class="row"><button class="btn" id="t3c">Check</button><span class="feedback" id="t3f"></span></div>
+</article>
+
+<article class="task" data-task="gap">
+ <h2 id="t4h"></h2>
+ <p class="lead" id="t4l"></p>
+ <div class="list" id="t4"></div>
+ <div class="row"><button class="btn" id="t4c">Check</button><span class="feedback" id="t4f"></span></div>
+</article>
+
+<article class="task" data-task="read">
+ <h2 id="t5h"></h2>
+ <p class="lead">Прочитай текст и ответь на вопросы. Можно коротко: одно-два слова.</p>
+ <div class="story" id="rtext"></div>
+ <div class="row"><button class="btn soft" id="rsay">🔊 Listen</button></div>
+ <div class="list" id="t5" style="margin-top:12px"></div>
+ <div class="row"><button class="btn" id="t5c">Check</button><span class="feedback" id="t5f"></span></div>
+</article>
+
+<article class="task" data-task="create">
+ <h2 id="t6h"></h2>
+ <p class="lead" id="t6l"></p>
+ <div class="mon" id="t6"></div>
+ <div class="row"><button class="btn" id="t6c">Check</button><button class="btn soft" id="t6s">🔊 Read my text</button><span class="feedback" id="t6f"></span></div>
+ <div class="out" id="t6out"></div>
+ <p class="lead" style="margin-top:12px" id="t6p"></p>
+</article>
+
+<div class="task trophy"><div class="big" id="trI">💪</div><h2 id="trT" style="margin:0">Win all 6 stars!</h2></div>
+</div>
+<script>
+const IMG={{IMGS}};
+const D={{DATA}};
+{{TTS}}
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const norm=s=>(s||'').toLowerCase().replace(/[’`]/g,"'").replace(/[.!?,;:]+/g,' ').replace(/-/g,'-').replace(/\s+/g,' ').trim();
+const W=D.words,CORE=W.filter(w=>!w.bonus);
+const pic=en=>IMG[en.replace(/ /g,'_')];
+const variants=en=>{const v=[en];if(en.includes('-'))v.push(en.replace(/-/g,''),en.replace(/-/g,' '));return v};
+
+/* stars */
+const KEYS=['listen','look','riddles','gap','read','create'];const doneS=new Set();
+function render(){const n=doneS.size;$('stars').innerHTML=KEYS.map((_,i)=>`<span class="${i<n?'':'off'}">⭐</span>`).join('');
+ $('trI').textContent=n===6?'🏆':n>=3?'🥈':'💪';$('trT').textContent=n===6?'Well done, Makar and Matvey! All 6 stars!':n?`${n} of 6 stars. Keep going!`:'Win all 6 stars!'}
+function win(k){if(doneS.has(k))return;doneS.add(k);document.querySelector(`[data-task="${k}"]`).classList.add('done');render()}
+function fbk(id,cls,msg){const f=$(id);f.className='feedback '+cls;f.textContent=msg}
+render();
+
+/* typed answer: hints after mistakes */
+function typed(input,answers,hintEl){const acc=(Array.isArray(answers)?answers:[answers]).map(norm);const main=acc[0];let tries=0;
+ input.addEventListener('input',()=>input.classList.remove('right','wrong'));
+ return function(){const v=norm(input.value);if(!v){input.classList.remove('right','wrong');return false}
+  if(acc.includes(v)){input.classList.add('right');input.classList.remove('wrong');input.readOnly=true;if(hintEl)hintEl.textContent='';return true}
+  tries++;input.classList.add('wrong');if(hintEl){const n=Math.min(tries,main.length-1);hintEl.textContent=tries>=3?('Answer: '+main):('Hint: '+main.slice(0,n)+'…')}return false}}
+const mk=(label,w)=>{const i=el('input');i.type='text';i.autocomplete='off';i.spellcheck=false;i.setAttribute('autocapitalize','off');i.setAttribute('aria-label',label);if(w)i.style.width=w;return i};
+function group(checks,fid,key,okMsg){const ok=checks.map(f=>f()).filter(Boolean).length;if(ok===checks.length){fbk(fid,'ok',okMsg);win(key)}else fbk(fid,'no',`${ok} of ${checks.length}. Look at the hints and try again!`)}
+
+/* 1 listen & write */
+(function(){const box=$('t1'),checks=[];shuffle(CORE).forEach((w,i)=>{const c=el('div','cell');const p=el('button','play','🔊');p.setAttribute('aria-label','Listen '+(i+1));p.onclick=()=>say(w.en,.7);
+ const inp=mk('word '+(i+1)),h=el('div','hint');c.append(p,inp,h);box.appendChild(c);checks.push(typed(inp,variants(w.en),h))});
+ $('t1c').onclick=()=>group(checks,'t1f','listen','⭐ Super spelling!')})();
+
+/* 2 look & write */
+(function(){const box=$('t2'),checks=[];shuffle(W).forEach((w,i)=>{const c=el('div','cell');c.innerHTML=`<img src="${pic(w.en)}" alt="picture ${i+1}"><span class="dots">${w.en.split(' ').map(x=>'•'.repeat(x.length)).join(' &nbsp; ')}</span>`;
+ const inp=mk('picture '+(i+1)),h=el('div','hint');c.append(inp,h);box.appendChild(c);checks.push(typed(inp,variants(w.en),h))});
+ $('t2c').onclick=()=>group(checks,'t2f','look',`⭐ You know all ${W.length} words!`)})();
+
+/* 3 riddles */
+(function(){const box=$('t3'),checks=[];D.riddles.forEach(([q,a],i)=>{const d=el('div','item');d.innerHTML=`<span class="num">${i+1}</span><span>${esc(q)}</span>`;const p=el('button','btn soft','🔊');p.style.padding='4px 10px';p.onclick=()=>say(q,.8);
+ const inp=mk('riddle '+(i+1)),h=el('span','hint');d.append(p,inp,h);box.appendChild(d);checks.push(typed(inp,a,h))});
+ $('t3c').onclick=()=>group(checks,'t3f','riddles','⭐ Clever! You guessed them all!')})();
+
+/* 4 gap task */
+(function(){const G=D.gap;$('t4h').textContent='4 · '+G.title;$('t4l').innerHTML=G.lead;const box=$('t4'),checks=[];
+ G.items.forEach(([pre,img,post,ans],i)=>{const d=el('div','item');d.innerHTML=`<span class="num">${i+1}</span>`+(img?`<img src="${pic(img)}" alt="">`:'')+`<span>${esc(pre)}</span>`;
+  const inp=mk('answer '+(i+1),G.width||'130px'),h=el('span','hint');d.append(inp,document.createTextNode(post),h);box.appendChild(d);checks.push(typed(inp,ans,h))});
+ $('t4c').onclick=()=>group(checks,'t4f','gap',G.ok)})();
+
+/* 5 read and answer */
+(function(){const R=D.read;$('t5h').textContent='5 · '+R.title;$('rtext').innerHTML=R.text.map(p=>`<p style="margin:0 0 8px">${esc(p)}</p>`).join('')+(R.gloss?`<div class="gloss">${esc(R.gloss)}</div>`:'');
+ $('rsay').onclick=()=>say(R.text.join(' '),.8);const box=$('t5'),checks=[];
+ R.qs.forEach(([q,a],i)=>{const d=el('div','item');d.innerHTML=`<span class="num">${i+1}</span><span>${esc(q)}</span>`;const inp=mk('answer '+(i+1),'170px'),h=el('span','hint');d.append(inp,h);box.appendChild(d);checks.push(typed(inp,a,h))});
+ $('t5c').onclick=()=>group(checks,'t5f','read','⭐ Great reading!')})();
+
+/* 6 creative */
+(function(){const C=D.create;$('t6h').textContent='6 · '+C.title;$('t6l').innerHTML=C.lead;$('t6p').textContent=C.paper;
+ const allowed=new Set(C.allowed.flatMap(variants).map(norm));const rows=[];const box=$('t6');
+ for(let i=0;i<C.rows;i++){const d=el('div','item');d.innerHTML=`<span class="num">${i+1}</span><span>${esc(C.prefix)}</span>`;let s=null;
+  if(C.select){s=el('select');s.setAttribute('aria-label','choose '+(i+1));C.select.forEach(o=>s.appendChild(el('option','',o)));s.value=C.select[i%C.select.length];d.append(s);s.onchange=out}
+  const inp=mk('word '+(i+1),'170px'),h=el('span','hint');d.append(inp,document.createTextNode(C.suffix),h);box.appendChild(d);rows.push([s,inp,h]);inp.oninput=()=>{inp.classList.remove('right','wrong');out()}}
+ function line(s,inp){return `${C.prefix} ${s?s.value+' ':''}${inp.value.trim()}${C.suffix}`}
+ function out(){const t=rows.filter(([s,i])=>i.value.trim()).map(([s,i])=>line(s,i));$('t6out').textContent=C.outPrefix+' '+t.join(' ')}
+ $('t6c').onclick=()=>{let ok=0;const used=new Set();rows.forEach(([s,inp,h])=>{const v=norm(inp.value);
+   if(!v){inp.className='wrong';h.textContent='Write a word.';return}
+   if(!allowed.has(v)){inp.className='wrong';h.textContent=C.wrongHint;return}
+   if(used.has(v)){inp.className='wrong';h.textContent='Use a different word.';return}
+   used.add(v);inp.className='right';h.textContent='';ok++});
+  out();if(ok===rows.length){fbk('t6f','ok','⭐ Wonderful!');win('create')}else fbk('t6f','no',`${ok} of ${rows.length}. Read the hints.`)};
+ $('t6s').onclick=()=>say($('t6out').textContent,.8);out()})();
+</script>
+</body>
+</html>
