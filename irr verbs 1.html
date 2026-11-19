@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Неправильные глаголы — Тренажёр для 3 класса</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    h1, h2, .font-display {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      /* Warm watercolor storybook paper texture */
+      background-color: #faf6ef;
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(254, 215, 226, 0.55) 0%, transparent 38%),
+        radial-gradient(circle at 90% 18%, rgba(191, 219, 254, 0.55) 0%, transparent 40%),
+        radial-gradient(circle at 15% 48%, rgba(254, 240, 138, 0.45) 0%, transparent 42%),
+        radial-gradient(circle at 85% 65%, rgba(187, 247, 208, 0.5) 0%, transparent 42%),
+        radial-gradient(circle at 30% 90%, rgba(233, 213, 255, 0.5) 0%, transparent 42%);
+      color: #292524;
+      overflow-x: hidden;
+    }
+
+    /* Offset anchor scroll for sticky header */
+    section[id^="ex-"] {
+      scroll-margin-top: 118px;
+    }
+
+    /* Storybook paper card */
+    .storybook-section {
+      background: rgba(255, 253, 249, 0.94);
+      border: 3px solid #f3ead8;
+      box-shadow: 0 10px 26px -6px rgba(120, 90, 50, 0.1), 0 3px 8px -2px rgba(120, 90, 50, 0.05);
+    }
+
+    /* 3D Flashcard Flip */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .preserve-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .flipped {
+      transform: rotateY(180deg);
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+
+    /* Tactile buttons */
+    .btn-bounce {
+      transition: transform 0.14s ease, box-shadow 0.14s ease, background-color 0.2s ease;
+    }
+    .btn-bounce:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+    .btn-bounce:active:not(:disabled) {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .animate-pop {
+      animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+    .animate-shake {
+      animation: shake 0.38s ease-in-out;
+    }
+
+    /* Hide scrollbar on horizontal catalog bar */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body class="pb-16">
+
+  <!-- Shared SVG Watercolor Filter Definitions (organic hand-painted edges & paper grain) -->
+  <svg width="0" height="0" class="hidden" aria-hidden="true">
+    <defs>
+      <filter id="watercolor-wash" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="7" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="4.5" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <filter id="watercolor-soft" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="12" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.8" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- COMPACT STICKY HEADER + QUICK-JUMP CATALOG -->
+  <header class="sticky top-0 z-40 bg-[#fffdf9]/95 backdrop-blur-md border-b-2 border-[#eadfce] shadow-sm">
+    <div class="max-w-4xl mx-auto px-3 sm:px-5 py-2.5 flex items-center justify-between gap-2">
+      <!-- Title -->
+      <div class="flex items-center gap-2">
+        <span class="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-300 via-orange-300 to-rose-400 flex items-center justify-center text-lg shadow-sm">
+          🎨
+        </span>
+        <div>
+          <h1 class="text-sm sm:text-lg font-black text-stone-800 leading-tight">Irregular Verbs • 3 класс</h1>
+          <p class="text-[11px] font-bold text-stone-500 hidden sm:block">Листай вниз и выполняй задания одно за другим!</p>
+        </div>
+      </div>
+
+      <!-- Sound Toggle & Completed Counter -->
+      <div class="flex items-center gap-2">
+        <button id="audio-toggle-btn" onclick="toggleAudio()"
+          class="btn-bounce flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl font-extrabold text-xs sm:text-sm border-2 bg-emerald-50 border-emerald-300 text-emerald-800 shadow-sm">
+          <span id="audio-icon">🔊</span>
+          <span id="audio-label">Озвучка: ВКЛ</span>
+        </button>
+
+        <div class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl bg-amber-50 border-2 border-amber-300 text-amber-900 font-black text-xs sm:text-sm shadow-sm">
+          <span>🏆</span>
+          <span id="progress-badge">Выполнено: 0 / 10</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Horizontal Scrollable Quick-Jump Catalog -->
+    <nav class="max-w-4xl mx-auto px-3 sm:px-5 pb-2 pt-0.5 overflow-x-auto no-scrollbar">
+      <div id="catalog-bar" class="flex items-center gap-1.5 min-w-max">
+        <!-- Populated by JS -->
+      </div>
+    </nav>
+  </header>
+
+  <!-- FLOATING FEEDBACK TOAST -->
+  <div id="toast-banner" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 hidden max-w-[92vw] sm:max-w-md px-4 py-3 rounded-2xl border-2 font-extrabold text-sm sm:text-base text-center shadow-xl"></div>
+
+  <!-- CONTINUOUS VERTICAL WORKBOOK STREAM -->
+  <main class="max-w-4xl mx-auto px-3 sm:px-5 pt-5 space-y-8">
+
+    <!-- Intro Hint Banner -->
+    <div class="rounded-3xl bg-gradient-to-r from-amber-100/80 via-rose-100/70 to-sky-100/80 border-2 border-[#eadfce] p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="text-center sm:text-left">
+        <p class="text-sm sm:text-base font-extrabold text-stone-800">
+          Привет! Здесь 10 весёлых заданий на 12 глаголов. Просто листай страницу вниз 👇
+        </p>
+        <p class="text-xs sm:text-sm font-bold text-stone-600 mt-0.5">
+          Сначала учи слова с озвучкой 🔊, а потом выключи звук 🔇 и проверь, как ты умеешь читать сам!
+        </p>
+      </div>
+      <span class="text-3xl shrink-0">📖✨</span>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- EXERCISE 1: FLASHCARDS (Карточки-переворачивалки)                    -->
+    <!-- =================================================================== -->
+    <section id="ex-1" class="storybook-section rounded-3xl p-4 sm:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-lg bg-rose-100 text-rose-800 font-black text-xs mb-1">ЗАДАНИЕ 1 из 10</span>
+          <h2 class="text-xl sm:text-2xl font-black text-stone-800">🃏 Карточки-переворачивалки</h2>
+          <p class="text-xs sm:text-sm text-stone-500 font-bold">Нажми на любую карточку, чтобы увидеть акварельную картинку и перевод!</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="flipAllCards(false)" class="btn-bounce px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-extrabold text-xs border border-stone-300">
+            Слова
+          </button>
+          <button onclick="flipAllCards(true)" class="btn-bounce px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 font-extrabold text-xs border border-amber-300">
+            Картинки
+          </button>
+        </div>
+      </div>
+
+      <div id="ex1-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+        <!-- 12 watercolor flashcards rendered here -->
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- EXERCISE 2: MEMORY MATCH (Найди пару V1 + V2)                        -->
+    <!-- =================================================================== -->
+    <section id="ex-2" class="storybook-section rounded-3xl p-4 sm:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-lg bg-sky-100 text-sky-800 font-black text-xs mb-1">ЗАДАНИЕ 2 из 10</span>
+          <h2 class="text-xl sm:text-2xl font-black text-stone-800">🧩 Найди пару (V1 и V2)</h2>
+          <p class="text-xs sm:text-sm text-stone-500 font-bold">Открывай карточки и соединяй 1-ю форму (Сегодня) со 2-й формой (Вчера)!</p>
+        </div>
+        <button onclick="initEx2(); renderEx2();" class="btn-bounce px-3.5 py-2 rounded-xl bg-sky-100 hover:bg-sky-200 text-sky-900 font-extrabold text-xs sm:text-sm border border-sky-300">
+          🔄 Новые слова
+        </button>
+      </div>
+      <div id="ex2-body"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- EXERCISE 3: SORTING (Сегодня Every day vs Вчера Yesterday)          -->
+    <!-- =================================================================== -->
+    <section id="ex-3" class="storybook-section rounded-3xl p-4 sm:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-black text-xs mb-1">ЗАДАНИЕ 3 из 10</span>
+          <h2 class="text-xl sm:text-2xl font-black text-stone-800">🧺 Сегодня или Вчера?</h2>
+          <p class="text-xs sm:text-sm text-stone-500 font-bold">Разложи слова в правильную корзинку: <b>Every day (V1)</b> или <b>Yesterday (V2)</b>!</p>
+        </div>
+        <span id="ex3-counter" class="px-3 py-1 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-extrabold text-xs sm:text-sm"></span>
+      </div>
+      <div id="ex3-body"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- EXERCISE 4: MATCHING COLUMNS (Соедини V1 и V2)                       -->
+    <!-- =================================================================== -->
+    <section id="ex-4" class="storybook-section rounded-3xl p-4 sm:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 font-black text-xs mb-1">ЗАДАНИЕ 4 из 10</span>
+          <h2 class="text-xl sm:text-2xl font-black text-stone-800">🔗 Соедини V1 и V2</h2>
+          <p class="text-xs sm:text-sm text-stone-500 font-bold">Нажми на слово в левом столбике, а потом на его пару в правом!</p>
+        </div>
+        <button onclick="nextEx4Batch()" class="btn-bounce px-3.5 py-2 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-extrabold text-xs sm:text-sm border border-emerald-300">
+          🔄 Следующая шестёрка
+        </button>
+      </div>
+      <div id="ex4-body"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- EXERCISE 5: PICTURE QUIZ (Угадай по картинке)                        -->
+    <!-- =================================================================== -->
+    <section id="ex-5" class="storybook-section rounded-3xl p-4 sm:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-800 font-black text-xs mb-1">ЗАДАНИЕ 5 из 10</span>
+          <h2 class="text-xl sm:text-2xl font-black text-stone-800">🖼️ Угадай по картинке</h2>
+          <p class="text-xs sm:text-sm text-stone-500 font-bold">Что это за действие? Выбери правильную пару глаголов!</p>
+        </div>
+        <span id="ex5-counter" class="px-3 py-1 rounded-xl bg-purple-50 border border-purple-200 text-purple-900 font-extrabold text-xs sm:text-sm"></span>
+      </div>
+      <div id="ex5-body"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- EXERCISE 6: LETTER TILES SPELLING (Собери слово из букв)             -->
+    <!-- =================================================================== -->
+    <section id="ex-6" class="storybook-section rounded-3xl p-4 sm:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-lg bg-teal-100 text-teal-800 font-black text-xs mb-1">ЗАДАНИЕ 6 из 10</span>
+          <h2 class="text-xl sm:text-2xl font-black text-stone-800">🔤 Собери слово из букв</h2>
+          <p class="text-xs sm:text-sm text-stone-500 font-bold">Нажимай на буквы по порядку, чтобы написать 2-ю форму глагола (V2)!</p>
+        </div>
+        <span id="ex6-counter" class="px-3 py-1 rounded-xl bg-teal-50 border border-teal-200 text-teal-900 font-extrabold text-xs sm:text-sm"></span>
+      </div>
+      <div id="ex6-body"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- EXERCISE 7: FILL IN THE SENTENCE (Вставь в предложение: Yesterday I) -->
+    <!-- =================================================================== -->
+    <section id="ex-7" class="storybook-section rounded-3xl p-4 sm:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-lg bg-indigo-100 text-indigo-800 font-black text-xs mb-1">ЗАДАНИЕ 7 из 10</span>
+          <h2 class="text-xl sm:text-2xl font-black text-stone-800">📝 Вставь в предложение: Yesterday I...</h2>
+          <p class="text-xs sm:text-sm text-stone-500 font-bold">Выбери правильное слово для каждого предложения (смотри на <b>Yesterday</b> или <b>Every day</b>)!</p>
+        </div>
+        <button onclick="initEx7(); renderEx7();" class="btn-bounce px-3 py-1.5 rounded-xl bg-indigo-100 text-indigo-900 font-extrabold text-xs border border-indigo-200">
+          🔄 Обновить
+        </button>
+      </div>
+      <div id="ex7-body" class="space-y-3"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- EXERCISE 8: MISTAKE HUNTER (Охота за ошибками)                       -->
+    <!-- =================================================================== -->
+    <section id="ex-8" class="storybook-section rounded-3xl p-4 sm:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-lg bg-rose-100 text-rose-800 font-black text-xs mb-1">ЗАДАНИЕ 8 из 10</span>
+          <h2 class="text-xl sm:text-2xl font-black text-stone-800">🕵️ Охота за ошибками</h2>
+          <p class="text-xs sm:text-sm text-stone-500 font-bold">Незнайка написал глаголы. Нажми <b>«✅ Верно»</b> или <b>«❌ Ошибка!»</b></p>
+        </div>
+        <button onclick="initEx8(); renderEx8();" class="btn-bounce px-3 py-1.5 rounded-xl bg-rose-100 text-rose-900 font-extrabold text-xs border border-rose-200">
+          🔄 Заново
+        </button>
+      </div>
+      <div id="ex8-body" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- EXERCISE 9: TYPE V2 (Впечатай вторую форму — все 12 глаголов)         -->
+    <!-- =================================================================== -->
+    <section id="ex-9" class="storybook-section rounded-3xl p-4 sm:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-black text-xs mb-1">ЗАДАНИЕ 9 из 10</span>
+          <h2 class="text-xl sm:text-2xl font-black text-stone-800">⌨️ Впечатай вторую форму (все 12 глаголов)</h2>
+          <p class="text-xs sm:text-sm text-stone-500 font-bold">Тренируем письмо! Впечатай V2 с клавиатуры. Если трудно — нажми «💡».</p>
+        </div>
+        <span id="ex9-counter" class="px-3 py-1 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-extrabold text-xs sm:text-sm">0 / 12</span>
+      </div>
+      <div id="ex9-body" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- EXERCISE 10: SENTENCE TYPING DICTATION (Письменный диктант)          -->
+    <!-- =================================================================== -->
+    <section id="ex-10" class="storybook-section rounded-3xl p-4 sm:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 font-black text-xs mb-1">ЗАДАНИЕ 10 из 10 • ФИНАЛ</span>
+          <h2 class="text-xl sm:text-2xl font-black text-stone-800">✍️ Письменный диктант: Yesterday I...</h2>
+          <p class="text-xs sm:text-sm text-stone-500 font-bold">Впечатай пропущенный глагол в прошедшем времени прямо внутрь предложения!</p>
+        </div>
+        <span id="ex10-counter" class="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 font-extrabold text-xs sm:text-sm">0 / 8</span>
+      </div>
+      <div id="ex10-body" class="space-y-3"></div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. VERB DATASET + HAND-PAINTED WATERCOLOR STORYBOOK ILLUSTRATIONS
+    // =========================================================================
+    const VERBS = [
+      {
+        id: 'get_up',
+        v1: 'get up',
+        v2: 'got up',
+        transcription: '',
+        ru: 'вставать, просыпаться',
+        ruShort: 'вставать',
+        wash: '#FFE4E6',
+        accent: '#BE123C',
+        presentSentence: 'Every day I ___ at 7 o’clock.',
+        pastSentence: 'Yesterday I ___ at 7 o’clock.',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <!-- Soft watercolor paper wash -->
+          <ellipse cx="90" cy="68" rx="76" ry="52" fill="#FDE68A" opacity="0.45" filter="url(#watercolor-wash)"/>
+          <ellipse cx="55" cy="82" rx="52" ry="34" fill="#BFDBFE" opacity="0.55" filter="url(#watercolor-wash)"/>
+          <!-- Morning sun rays -->
+          <circle cx="144" cy="28" r="16" fill="#FACC15" opacity="0.85" filter="url(#watercolor-soft)"/>
+          <path d="M144 6 V11 M166 28 H161 M128 14 L132 18 M159 42 L155 38" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Wooden headboard & cozy bed -->
+          <rect x="24" y="42" width="12" height="62" rx="4" fill="#D97706" stroke="#78350F" stroke-width="1.8"/>
+          <path d="M34 74 Q90 66 146 76 L146 102 L34 102 Z" fill="#93C5FD" stroke="#3B82F6" stroke-width="1.8" filter="url(#watercolor-soft)"/>
+          <!-- Fluffy pillow -->
+          <ellipse cx="52" cy="70" rx="18" ry="10" fill="#FFFBEB" stroke="#94A3B8" stroke-width="1.5"/>
+          <!-- Child stretching arms happily -->
+          <circle cx="84" cy="52" r="14" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M71 48 Q84 32 97 48" fill="#92400E" stroke="#78350F" stroke-width="1.5"/>
+          <path d="M78 50 Q80 48 82 50 M86 50 Q88 48 90 50" stroke="#451A03" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M80 57 Q84 61 88 57" stroke="#9A3412" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <!-- Stretching arms -->
+          <path d="M72 64 L54 44" stroke="#FED7AA" stroke-width="6" stroke-linecap="round"/>
+          <path d="M96 64 L114 44" stroke="#FED7AA" stroke-width="6" stroke-linecap="round"/>
+          <path d="M72 64 L54 44 M96 64 L114 44" stroke="#78350F" stroke-width="1.4" stroke-linecap="round"/>
+          <!-- Striped pajama top -->
+          <rect x="72" y="64" width="24" height="14" rx="5" fill="#FDBA74" stroke="#78350F" stroke-width="1.5"/>
+        </svg>`
+      },
+      {
+        id: 'have',
+        v1: 'have',
+        v2: 'had',
+        transcription: '',
+        ru: 'иметь (у меня есть / был)',
+        ruShort: 'иметь',
+        wash: '#FEF3C7',
+        accent: '#B45309',
+        presentSentence: 'I ___ a colourful balloon.',
+        pastSentence: 'Yesterday I ___ a nice toy.',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="68" rx="74" ry="52" fill="#FDE68A" opacity="0.45" filter="url(#watercolor-wash)"/>
+          <!-- Child holding a rainbow watercolor balloon -->
+          <circle cx="72" cy="46" r="14" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M59 42 Q72 28 85 42" fill="#78350F"/>
+          <circle cx="68" cy="45" r="1.5" fill="#1C1917"/>
+          <circle cx="76" cy="45" r="1.5" fill="#1C1917"/>
+          <path d="M68 51 Q72 55 76 51" stroke="#78350F" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <!-- Sweater & trousers -->
+          <rect x="58" y="61" width="28" height="30" rx="9" fill="#FCA5A5" stroke="#78350F" stroke-width="1.6" filter="url(#watercolor-soft)"/>
+          <path d="M65 91 L63 112 M79 91 L81 112" stroke="#475569" stroke-width="6" stroke-linecap="round"/>
+          <!-- Arm holding string -->
+          <path d="M84 68 L104 62" stroke="#FED7AA" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M104 62 Q112 52 118 42" stroke="#78350F" stroke-width="1.3" fill="none"/>
+          <!-- Pastel rainbow balloon -->
+          <ellipse cx="122" cy="28" rx="17" ry="21" fill="#F472B6" opacity="0.8" filter="url(#watercolor-wash)"/>
+          <ellipse cx="118" cy="24" rx="11" ry="14" fill="#FDE047" opacity="0.65" filter="url(#watercolor-wash)"/>
+          <ellipse cx="122" cy="28" rx="17" ry="21" fill="none" stroke="#831843" stroke-width="1.5"/>
+        </svg>`
+      },
+      {
+        id: 'give',
+        v1: 'give',
+        v2: 'gave',
+        transcription: '',
+        ru: 'давать, дарить',
+        ruShort: 'давать / дарить',
+        wash: '#FCE7F3',
+        accent: '#BE185D',
+        presentSentence: 'I often ___ gifts to my friends.',
+        pastSentence: 'Yesterday Mum ___ me a present.',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="68" rx="75" ry="50" fill="#FBCFE8" opacity="0.5" filter="url(#watercolor-wash)"/>
+          <!-- Two children exchanging a gift box -->
+          <circle cx="52" cy="48" r="13" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M40 44 Q52 30 64 44" fill="#451A03"/>
+          <circle cx="55" cy="47" r="1.5" fill="#1C1917"/>
+          <path d="M52 53 Q56 56 59 53" stroke="#78350F" stroke-width="1.5" fill="none"/>
+          <rect x="40" y="62" width="24" height="34" rx="8" fill="#93C5FD" stroke="#1E3A8A" stroke-width="1.5"/>
+          <!-- Gift box in the middle -->
+          <rect x="74" y="56" width="32" height="28" rx="4" fill="#F472B6" stroke="#831843" stroke-width="1.6" filter="url(#watercolor-soft)"/>
+          <rect x="87" y="56" width="6" height="28" fill="#FDE047"/>
+          <rect x="74" y="67" width="32" height="6" fill="#FDE047"/>
+          <path d="M90 56 C82 46 78 54 88 56 M90 56 C98 46 102 54 92 56" stroke="#CA8A04" stroke-width="2.5" fill="none"/>
+          <!-- Second child receiving happily -->
+          <circle cx="130" cy="48" r="13" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M117 45 Q130 28 143 45" fill="#F59E0B"/>
+          <circle cx="126" cy="47" r="1.5" fill="#1C1917"/>
+          <path d="M123 53 Q127 56 130 53" stroke="#78350F" stroke-width="1.5" fill="none"/>
+          <rect x="118" y="62" width="24" height="34" rx="8" fill="#FDE047" stroke="#854D0E" stroke-width="1.5"/>
+        </svg>`
+      },
+      {
+        id: 'go',
+        v1: 'go',
+        v2: 'went',
+        transcription: '',
+        ru: 'идти, ходить, ехать',
+        ruShort: 'идти / ходить',
+        wash: '#DCFCE7',
+        accent: '#15803D',
+        presentSentence: 'Every day I ___ to school.',
+        pastSentence: 'Yesterday we ___ to the park.',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="70" rx="76" ry="50" fill="#BBF7D0" opacity="0.55" filter="url(#watercolor-wash)"/>
+          <!-- Winding watercolor garden path -->
+          <path d="M20 112 Q90 95 162 108" stroke="#D97706" stroke-width="10" stroke-linecap="round" opacity="0.35" fill="none"/>
+          <!-- Child walking with school backpack -->
+          <rect x="64" y="54" width="14" height="24" rx="6" fill="#FB923C" stroke="#7C2D12" stroke-width="1.5"/>
+          <circle cx="88" cy="36" r="13" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M76 32 Q88 20 100 32" fill="#451A03"/>
+          <circle cx="92" cy="35" r="1.5" fill="#1C1917"/>
+          <path d="M89 41 Q93 44 96 41" stroke="#78350F" stroke-width="1.5" fill="none"/>
+          <rect x="78" y="50" width="20" height="28" rx="8" fill="#60A5FA" stroke="#1E3A8A" stroke-width="1.5"/>
+          <!-- Striding legs -->
+          <path d="M84 78 L72 102" stroke="#1E3A8A" stroke-width="6.5" stroke-linecap="round"/>
+          <path d="M92 78 L106 100" stroke="#1E3A8A" stroke-width="6.5" stroke-linecap="round"/>
+          <!-- Little tree in background -->
+          <rect x="138" y="64" width="6" height="26" fill="#92400E"/>
+          <circle cx="141" cy="54" r="16" fill="#4ADE80" opacity="0.8" filter="url(#watercolor-wash)"/>
+        </svg>`
+      },
+      {
+        id: 'see',
+        v1: 'see',
+        v2: 'saw',
+        transcription: '',
+        ru: 'видеть',
+        ruShort: 'видеть',
+        wash: '#E0F2FE',
+        accent: '#0369A1',
+        presentSentence: 'I can ___ a rainbow in the sky.',
+        pastSentence: 'Yesterday I ___ a funny dog.',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="66" rx="76" ry="50" fill="#BAE6FD" opacity="0.55" filter="url(#watercolor-wash)"/>
+          <!-- Soft watercolor rainbow -->
+          <path d="M36 74 A54 50 0 0 1 144 74" stroke="#F43F5E" stroke-width="5" fill="none" opacity="0.75" filter="url(#watercolor-soft)"/>
+          <path d="M42 74 A48 44 0 0 1 138 74" stroke="#FACC15" stroke-width="5" fill="none" opacity="0.8" filter="url(#watercolor-soft)"/>
+          <path d="M48 74 A42 38 0 0 1 132 74" stroke="#38BDF8" stroke-width="5" fill="none" opacity="0.8" filter="url(#watercolor-soft)"/>
+          <!-- Child looking through binoculars -->
+          <circle cx="90" cy="76" r="15" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M76 70 Q90 54 104 70" fill="#78350F"/>
+          <circle cx="83" cy="76" r="6" fill="#38BDF8" stroke="#0369A1" stroke-width="2"/>
+          <circle cx="97" cy="76" r="6" fill="#38BDF8" stroke="#0369A1" stroke-width="2"/>
+          <circle cx="83" cy="76" r="2.5" fill="#FFF"/>
+          <circle cx="97" cy="76" r="2.5" fill="#FFF"/>
+          <rect x="74" y="92" width="32" height="22" rx="8" fill="#A7F3D0" stroke="#065F46" stroke-width="1.5"/>
+        </svg>`
+      },
+      {
+        id: 'say',
+        v1: 'say',
+        v2: 'said',
+        transcription: '',
+        ru: 'говорить, сказать',
+        ruShort: 'говорить / сказать',
+        wash: '#F3E8FF',
+        accent: '#7E22CE',
+        presentSentence: 'Bob always ___ "Hello!" to me.',
+        pastSentence: 'Yesterday she ___ "Thank you!"',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="66" rx="75" ry="50" fill="#E9D5FF" opacity="0.55" filter="url(#watercolor-wash)"/>
+          <!-- Child speaking warmly -->
+          <circle cx="58" cy="72" r="16" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M43 66 Q58 50 73 66" fill="#78350F"/>
+          <circle cx="54" cy="70" r="1.6" fill="#1C1917"/>
+          <circle cx="63" cy="70" r="1.6" fill="#1C1917"/>
+          <ellipse cx="59" cy="78" rx="3.5" ry="2.8" fill="#E11D48"/>
+          <rect x="42" y="89" width="32" height="24" rx="9" fill="#FCA5A5" stroke="#78350F" stroke-width="1.5"/>
+          <!-- Storybook speech bubble with little watercolor hearts -->
+          <rect x="82" y="22" width="74" height="44" rx="18" fill="#FFFBEB" stroke="#9333EA" stroke-width="2" filter="url(#watercolor-soft)"/>
+          <path d="M90 65 L78 76 L102 66" fill="#FFFBEB" stroke="#9333EA" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M104 42 C104 38 110 38 110 42 C110 38 116 38 116 42 C116 48 110 52 110 52 C110 52 104 48 104 42 Z" fill="#F43F5E"/>
+          <path d="M126 38 C126 35 131 35 131 38 C131 35 136 35 136 38 C136 43 131 46 131 46 C131 46 126 43 126 38 Z" fill="#EC4899"/>
+        </svg>`
+      },
+      {
+        id: 'come',
+        v1: 'come',
+        v2: 'came',
+        transcription: '',
+        ru: 'приходить, приезжать',
+        ruShort: 'приходить',
+        wash: '#FFEDD5',
+        accent: '#C2410C',
+        presentSentence: 'My friends ___ to my house.',
+        pastSentence: 'Yesterday Grandma ___ to see us.',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="68" rx="76" ry="50" fill="#FED7AA" opacity="0.45" filter="url(#watercolor-wash)"/>
+          <!-- Cozy cottage doorway -->
+          <rect x="34" y="24" width="52" height="86" rx="6" fill="#FEF3C7" stroke="#92400E" stroke-width="2"/>
+          <path d="M34 24 L64 32 L64 102 L34 110 Z" fill="#F59E0B" opacity="0.8" stroke="#92400E" stroke-width="1.8"/>
+          <circle cx="57" cy="68" r="2.8" fill="#78350F"/>
+          <!-- Child coming in waving -->
+          <circle cx="114" cy="48" r="14" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M101 44 Q114 28 127 44" fill="#451A03"/>
+          <circle cx="110" cy="47" r="1.5" fill="#1C1917"/>
+          <circle cx="118" cy="47" r="1.5" fill="#1C1917"/>
+          <path d="M110 53 Q114 56 118 53" stroke="#78350F" stroke-width="1.5" fill="none"/>
+          <rect x="102" y="63" width="24" height="28" rx="8" fill="#6EE7B7" stroke="#065F46" stroke-width="1.5"/>
+          <path d="M102 68 L86 54" stroke="#FED7AA" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M108 91 L104 110 M120 91 L124 110" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+        </svg>`
+      },
+      {
+        id: 'take',
+        v1: 'take',
+        v2: 'took',
+        transcription: '',
+        ru: 'брать, взять',
+        ruShort: 'брать / взять',
+        wash: '#CCFBF1',
+        accent: '#0F766E',
+        presentSentence: 'I always ___ a book to read.',
+        pastSentence: 'Yesterday Tim ___ a green book.',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="68" rx="75" ry="50" fill="#99F6E4" opacity="0.45" filter="url(#watercolor-wash)"/>
+          <!-- Wooden bookshelf -->
+          <rect x="28" y="24" width="68" height="84" rx="4" fill="#FDE68A" stroke="#92400E" stroke-width="2"/>
+          <line x1="28" y1="54" x2="96" y2="54" stroke="#92400E" stroke-width="2.5"/>
+          <line x1="28" y1="82" x2="96" y2="82" stroke="#92400E" stroke-width="2.5"/>
+          <!-- Colorful watercolor books -->
+          <rect x="34" y="32" width="10" height="22" rx="2" fill="#F87171"/>
+          <rect x="46" y="34" width="10" height="20" rx="2" fill="#60A5FA"/>
+          <rect x="36" y="60" width="11" height="22" rx="2" fill="#A78BFA"/>
+          <rect x="49" y="62" width="10" height="20" rx="2" fill="#FBBF24"/>
+          <!-- Child taking a green book -->
+          <circle cx="128" cy="48" r="14" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M115 44 Q128 28 141 44" fill="#92400E"/>
+          <circle cx="123" cy="47" r="1.5" fill="#1C1917"/>
+          <rect x="116" y="63" width="24" height="36" rx="8" fill="#93C5FD" stroke="#1E3A8A" stroke-width="1.5"/>
+          <path d="M116 68 L90 48" stroke="#FED7AA" stroke-width="5.5" stroke-linecap="round"/>
+          <rect x="78" y="38" width="14" height="20" rx="2" fill="#34D399" stroke="#065F46" stroke-width="1.5" transform="rotate(-15 85 48)"/>
+        </svg>`
+      },
+      {
+        id: 'eat',
+        v1: 'eat',
+        v2: 'ate',
+        transcription: '[et]',
+        ru: 'есть, кушать',
+        ruShort: 'есть / кушать',
+        wash: '#FEE2E2',
+        accent: '#B91C1C',
+        presentSentence: 'Every day I ___ a sweet apple.',
+        pastSentence: 'Yesterday I ___ a big red apple.',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="68" rx="74" ry="50" fill="#FECACA" opacity="0.5" filter="url(#watercolor-wash)"/>
+          <!-- Happy child eating a juicy red apple -->
+          <circle cx="90" cy="46" r="16" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M75 40 Q90 24 105 40" fill="#78350F"/>
+          <circle cx="84" cy="45" r="1.7" fill="#1C1917"/>
+          <circle cx="96" cy="45" r="1.7" fill="#1C1917"/>
+          <path d="M85 52 Q90 56 95 52" stroke="#78350F" stroke-width="1.6" fill="none"/>
+          <rect x="70" y="64" width="40" height="34" rx="11" fill="#86EFAC" stroke="#166534" stroke-width="1.5"/>
+          <!-- Big watercolor red apple with a bite -->
+          <circle cx="90" cy="78" r="16" fill="#EF4444" filter="url(#watercolor-soft)"/>
+          <circle cx="104" cy="75" r="6" fill="#86EFAC"/>
+          <path d="M90 62 Q92 55 96 54" stroke="#78350F" stroke-width="2.2" fill="none"/>
+          <ellipse cx="98" cy="57" rx="6" ry="3" fill="#22C55E"/>
+        </svg>`
+      },
+      {
+        id: 'can',
+        v1: 'can',
+        v2: 'could',
+        transcription: '[kʊd]',
+        ru: 'мочь, уметь',
+        ruShort: 'мочь / уметь',
+        wash: '#FEF9C3',
+        accent: '#A16207',
+        presentSentence: 'I ___ jump very high!',
+        pastSentence: 'Yesterday he ___ reach the star!',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="66" rx="76" ry="52" fill="#FEF08A" opacity="0.6" filter="url(#watercolor-wash)"/>
+          <ellipse cx="90" cy="54" rx="48" ry="32" fill="#C4B5FD" opacity="0.45" filter="url(#watercolor-wash)"/>
+          <!-- Little hero soaring up to catch a golden star -->
+          <path d="M64 62 L116 62 L124 94 L56 94 Z" fill="#F87171" opacity="0.85" filter="url(#watercolor-soft)"/>
+          <circle cx="90" cy="46" r="14" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M77 41 Q90 27 103 41" fill="#92400E"/>
+          <circle cx="85" cy="45" r="1.5" fill="#1C1917"/>
+          <circle cx="95" cy="45" r="1.5" fill="#1C1917"/>
+          <path d="M86 51 Q90 55 94 51" stroke="#78350F" stroke-width="1.6" fill="none"/>
+          <rect x="76" y="61" width="28" height="28" rx="9" fill="#60A5FA" stroke="#1E3A8A" stroke-width="1.5"/>
+          <path d="M76 66 L58 46 M104 66 L122 46" stroke="#FED7AA" stroke-width="5.5" stroke-linecap="round"/>
+          <!-- Golden star -->
+          <polygon points="132,20 135,28 144,28 137,33 139,41 132,36 125,41 127,33 120,28 129,28" fill="#FACC15" stroke="#B45309" stroke-width="1.4"/>
+        </svg>`
+      },
+      {
+        id: 'put',
+        v1: 'put',
+        v2: 'put',
+        transcription: '',
+        ru: 'класть, положить',
+        ruShort: 'класть / положить',
+        wash: '#E0E7FF',
+        accent: '#4338CA',
+        presentSentence: 'Every day I ___ my toys in the box.',
+        pastSentence: 'Yesterday Ann ___ her toys in the box.',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="68" rx="75" ry="50" fill="#C7D2FE" opacity="0.5" filter="url(#watercolor-wash)"/>
+          <!-- Child kneeling and putting a teddy/ball into a toy box -->
+          <rect x="86" y="66" width="58" height="36" rx="6" fill="#FBBF24" stroke="#92400E" stroke-width="1.8" filter="url(#watercolor-soft)"/>
+          <path d="M86 66 L76 56 L134 56 L144 66" fill="#FDE68A" stroke="#92400E" stroke-width="1.6"/>
+          <!-- Child -->
+          <circle cx="54" cy="48" r="14" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M41 44 Q54 28 67 44" fill="#78350F"/>
+          <circle cx="58" cy="47" r="1.5" fill="#1C1917"/>
+          <path d="M54 53 Q58 56 61 53" stroke="#78350F" stroke-width="1.5" fill="none"/>
+          <rect x="42" y="63" width="24" height="32" rx="8" fill="#A5B4FC" stroke="#312E81" stroke-width="1.5"/>
+          <path d="M64 68 L98 54" stroke="#FED7AA" stroke-width="5.5" stroke-linecap="round"/>
+          <!-- Toy ball placed into box -->
+          <circle cx="108" cy="52" r="10" fill="#F43F5E" stroke="#881337" stroke-width="1.5"/>
+        </svg>`
+      },
+      {
+        id: 'drink',
+        v1: 'drink',
+        v2: 'drank',
+        transcription: '[dræŋk]',
+        ru: 'пить',
+        ruShort: 'пить',
+        wash: '#CFFAFE',
+        accent: '#0E7490',
+        presentSentence: 'Every day I ___ warm milk.',
+        pastSentence: 'Yesterday I ___ orange juice.',
+        svg: `<svg viewBox="0 0 180 130" class="w-full h-full">
+          <ellipse cx="90" cy="68" rx="75" ry="50" fill="#A5F3FC" opacity="0.55" filter="url(#watercolor-wash)"/>
+          <!-- Child holding a tall glass of fresh orange juice -->
+          <circle cx="90" cy="44" r="16" fill="#FED7AA" stroke="#78350F" stroke-width="1.6"/>
+          <path d="M75 38 Q90 22 105 38" fill="#451A03"/>
+          <circle cx="84" cy="43" r="1.6" fill="#1C1917"/>
+          <circle cx="96" cy="43" r="1.6" fill="#1C1917"/>
+          <path d="M86 50 Q90 54 94 50" stroke="#78350F" stroke-width="1.6" fill="none"/>
+          <rect x="70" y="62" width="40" height="36" rx="11" fill="#FDE047" stroke="#854D0E" stroke-width="1.5"/>
+          <!-- Glass of juice -->
+          <path d="M80 68 L100 68 L97 96 L83 96 Z" fill="#FFFFFF" fill-opacity="0.75" stroke="#0284C7" stroke-width="1.6"/>
+          <path d="M81 76 L99 76 L97 95 L83 95 Z" fill="#FB923C" filter="url(#watercolor-soft)"/>
+          <path d="M92 78 L102 54" stroke="#EC4899" stroke-width="3" stroke-linecap="round"/>
+        </svg>`
+      }
+    ];
+
+    // =========================================================================
+    // 2. GLOBAL STATE, AUDIO & PROGRESS TRACKING
+    // =========================================================================
+    let audioEnabled = true;
+    const completedSections = new Set();
+
+    const CATALOG_ITEMS = [
+      { id: 'ex-1', label: '1. Карточки' },
+      { id: 'ex-2', label: '2. Пары' },
+      { id: 'ex-3', label: '3. Корзинки' },
+      { id: 'ex-4', label: '4. Соедини' },
+      { id: 'ex-5', label: '5. Картинки' },
+      { id: 'ex-6', label: '6. Буквы' },
+      { id: 'ex-7', label: '7. Фразы' },
+      { id: 'ex-8', label: '8. Ошибки' },
+      { id: 'ex-9', label: '9. Впечатай' },
+      { id: 'ex-10', label: '10. Диктант' }
+    ];
+
+    function renderCatalog() {
+      const bar = document.getElementById('catalog-bar');
+      bar.innerHTML = CATALOG_ITEMS.map(item => {
+        const isDone = completedSections.has(item.id);
+        return `
+          <button onclick="scrollToSection('${item.id}')"
+            class="btn-bounce px-2.5 py-1 rounded-xl text-xs font-extrabold border transition-all ${
+              isDone
+                ? 'bg-emerald-100 border-emerald-400 text-emerald-900'
+                : 'bg-white border-[#e5d9c5] text-stone-700 hover:bg-amber-50'
+            }">
+            ${isDone ? '✅ ' : ''}${item.label}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function markSectionComplete(sectionId) {
+      if (!completedSections.has(sectionId)) {
+        completedSections.add(sectionId);
+        document.getElementById('progress-badge').textContent = `Выполнено: ${completedSections.size} / 10`;
+        renderCatalog();
+        triggerConfetti();
+      }
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const btn = document.getElementById('audio-toggle-btn');
+      const icon = document.getElementById('audio-icon');
+      const label = document.getElementById('audio-label');
+
+      if (audioEnabled) {
+        btn.className = 'btn-bounce flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl font-extrabold text-xs sm:text-sm border-2 bg-emerald-50 border-emerald-300 text-emerald-800 shadow-sm';
+        icon.textContent = '🔊';
+        label.textContent = 'Озвучка: ВКЛ';
+        showToast('🔊 Озвучка включена!', 'info');
+      } else {
+        btn.className = 'btn-bounce flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl font-extrabold text-xs sm:text-sm border-2 bg-stone-100 border-stone-300 text-stone-600 shadow-sm';
+        icon.textContent = '🔇';
+        label.textContent = 'Озвучка: ВЫКЛ';
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        showToast('🔇 Озвучка выключена — читаем самостоятельно!', 'info');
+      }
+      renderEx1();
+    }
+
+    function speak(text) {
+      if (!audioEnabled || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'en-US';
+      utter.rate = 0.85;
+      window.speechSynthesis.speak(utter);
+    }
+
+    let toastTimer;
+    function showToast(msg, type = 'success') {
+      const el = document.getElementById('toast-banner');
+      el.classList.remove('hidden', 'bg-emerald-100', 'border-emerald-400', 'text-emerald-950', 'bg-rose-100', 'border-rose-400', 'text-rose-950', 'bg-amber-100', 'border-amber-400', 'text-amber-950');
+      if (type === 'success') el.classList.add('bg-emerald-100', 'border-emerald-400', 'text-emerald-950');
+      else if (type === 'error') el.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-950');
+      else el.classList.add('bg-amber-100', 'border-amber-400', 'text-amber-950');
+      el.textContent = msg;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.add('hidden'), 2600);
+    }
+
+    function triggerConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ['#F43F5E', '#F59E0B', '#10B981', '#3B82F6', '#A855F7'];
+      const pieces = Array.from({ length: 70 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * -canvas.height * 0.5,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * 4 + 2.5,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      }));
+      let frame = 0;
+      function loop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, p.r * 1.4, p.r);
+          p.y += p.d;
+        });
+        frame++;
+        if (frame < 95) requestAnimationFrame(loop);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      loop();
+    }
+
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    // =========================================================================
+    // EXERCISE 1: 12 WATERCOLOR FLASHCARDS GRID
+    // =========================================================================
+    const flippedState = {};
+
+    function renderEx1() {
+      const grid = document.getElementById('ex1-grid');
+      grid.innerHTML = VERBS.map(v => {
+        const isFlipped = !!flippedState[v.id];
+        return `
+          <div class="perspective-1000 h-44 sm:h-52 cursor-pointer select-none" onclick="toggleCardFlip('${v.id}')">
+            <div class="preserve-3d relative w-full h-full ${isFlipped ? 'flipped' : ''}">
+              <!-- FRONT: V1 - V2 + Transcription + Speaker -->
+              <div class="backface-hidden absolute inset-0 rounded-2xl p-3 flex flex-col justify-between border-2 shadow-sm"
+                   style="background-color: ${v.wash}; border-color: ${v.accent}40;">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-white/80 text-stone-500">V1 – V2</span>
+                  ${audioEnabled ? `
+                    <button onclick="event.stopPropagation(); speak('${v.v1} ... ${v.v2}')"
+                      class="btn-bounce w-8 h-8 rounded-xl bg-white/90 flex items-center justify-center text-sm shadow-sm border border-stone-200">
+                      🔊
+                    </button>
+                  ` : ''}
+                </div>
+                <div class="text-center my-auto">
+                  <div class="text-lg sm:text-2xl font-black text-stone-900 leading-snug">
+                    ${v.v1} – <span style="color: ${v.accent};">${v.v2}</span>
+                  </div>
+                  ${v.transcription ? `<div class="text-xs sm:text-sm font-extrabold text-stone-600 mt-1">${v.transcription}</div>` : ''}
+                </div>
+                <div class="text-center text-[11px] font-bold text-stone-500">👆 Перевернуть</div>
+              </div>
+
+              <!-- BACK: Watercolor Illustration + Translation -->
+              <div class="backface-hidden rotate-y-180 absolute inset-0 rounded-2xl p-2.5 bg-white flex flex-col items-center justify-between border-2 shadow-sm"
+                   style="border-color: ${v.accent}60;">
+                <div class="w-full h-24 sm:h-28">${v.svg}</div>
+                <div class="text-center">
+                  <div class="text-xs sm:text-sm font-black text-stone-800 leading-tight">${v.ru}</div>
+                  <div class="text-[11px] font-bold text-stone-400">${v.v1} – ${v.v2}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleCardFlip(id) {
+      flippedState[id] = !flippedState[id];
+      const v = VERBS.find(x => x.id === id);
+      if (v) speak(`${v.v1} ... ${v.v2}`);
+      if (Object.values(flippedState).filter(Boolean).length >= 6) {
+        markSectionComplete('ex-1');
+      }
+      renderEx1();
+    }
+
+    function flipAllCards(state) {
+      VERBS.forEach(v => flippedState[v.id] = state);
+      if (state) markSectionComplete('ex-1');
+      renderEx1();
+    }
+
+    // =========================================================================
+    // EXERCISE 2: MEMORY MATCH (6 pairs = 12 cards)
+    // =========================================================================
+    let ex2Cards = [];
+    let ex2Open = [];
+    let ex2Lock = false;
+
+    function initEx2() {
+      const subset = shuffle(VERBS).slice(0, 6);
+      const deck = [];
+      subset.forEach(v => {
+        deck.push({ pairId: v.id, text: v.v1, tag: 'V1', style: 'bg-sky-50 border-sky-300 text-sky-900', matched: false });
+        deck.push({ pairId: v.id, text: v.v2, tag: 'V2', style: 'bg-rose-50 border-rose-300 text-rose-900', matched: false });
+      });
+      ex2Cards = shuffle(deck);
+      ex2Open = [];
+      ex2Lock = false;
+    }
+
+    function renderEx2() {
+      const body = document.getElementById('ex2-body');
+      body.innerHTML = `
+        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+          ${ex2Cards.map((c, idx) => {
+            const revealed = c.matched || ex2Open.includes(idx);
+            if (revealed) {
+              return `
+                <div class="h-20 sm:h-24 rounded-2xl border-2 p-2 flex flex-col items-center justify-center text-center ${c.style} ${c.matched ? 'opacity-65 ring-2 ring-emerald-400' : 'animate-pop'}">
+                  <span class="text-[10px] font-extrabold opacity-60">${c.tag}</span>
+                  <span class="text-base sm:text-xl font-black">${c.text}</span>
+                </div>
+              `;
+            }
+            return `
+              <button onclick="clickEx2(${idx})"
+                class="btn-bounce h-20 sm:h-24 rounded-2xl bg-gradient-to-br from-sky-400 to-indigo-500 border-2 border-indigo-600 text-white text-2xl font-black shadow-sm">
+                ?
+              </button>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function clickEx2(idx) {
+      if (ex2Lock || ex2Open.includes(idx) || ex2Cards[idx].matched) return;
+      speak(ex2Cards[idx].text);
+      ex2Open.push(idx);
+      renderEx2();
+
+      if (ex2Open.length === 2) {
+        ex2Lock = true;
+        const [a, b] = ex2Open;
+        if (ex2Cards[a].pairId === ex2Cards[b].pairId) {
+          setTimeout(() => {
+            ex2Cards[a].matched = true;
+            ex2Cards[b].matched = true;
+            ex2Open = [];
+            ex2Lock = false;
+            showToast('✅ Отлично! Пара найдена!', 'success');
+            if (ex2Cards.every(c => c.matched)) markSectionComplete('ex-2');
+            renderEx2();
+          }, 400);
+        } else {
+          setTimeout(() => {
+            ex2Open = [];
+            ex2Lock = false;
+            renderEx2();
+          }, 750);
+        }
+      }
+    }
+
+    // =========================================================================
+    // EXERCISE 3: EVERY DAY (V1) vs YESTERDAY (V2) SORTING
+    // =========================================================================
+    let ex3Queue = [];
+    let ex3Done = 0;
+
+    function initEx3() {
+      const distinct = VERBS.filter(v => v.v1 !== v.v2);
+      const pool = [];
+      distinct.forEach(v => {
+        pool.push({ word: v.v1, type: 'V1', ru: v.ruShort });
+        pool.push({ word: v.v2, type: 'V2', ru: v.ruShort });
+      });
+      ex3Queue = shuffle(pool).slice(0, 8);
+      ex3Done = 0;
+    }
+
+    function renderEx3() {
+      const body = document.getElementById('ex3-body');
+      document.getElementById('ex3-counter').textContent = `Готово: ${ex3Done} / 8`;
+
+      if (ex3Queue.length === 0) {
+        body.innerHTML = `
+          <div class="text-center py-6 bg-emerald-50 rounded-2xl border-2 border-emerald-200">
+            <div class="text-4xl mb-2">🎉</div>
+            <p class="font-black text-emerald-900 text-lg mb-3">Все 8 слов разложены по корзинкам!</p>
+            <button onclick="initEx3(); renderEx3();" class="btn-bounce px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-sm">
+              Сыграть ещё раз 🔄
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      const cur = ex3Queue[0];
+      body.innerHTML = `
+        <div class="max-w-sm mx-auto p-5 rounded-2xl bg-amber-50/80 border-2 border-amber-300 text-center mb-4">
+          <div class="text-2xl sm:text-3xl font-black text-stone-900">${cur.word}</div>
+          <div class="text-xs sm:text-sm font-bold text-stone-500 mt-1">(${cur.ru})</div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 max-w-lg mx-auto">
+          <button onclick="answerEx3('V1')" class="btn-bounce p-4 rounded-2xl bg-sky-100 hover:bg-sky-200 border-2 border-sky-400 text-sky-950 text-center">
+            <div class="text-2xl">☀️</div>
+            <div class="font-black text-sm sm:text-base">Every day (V1)</div>
+            <div class="text-[11px] font-bold text-sky-700">Обычно / Сегодня</div>
+          </button>
+          <button onclick="answerEx3('V2')" class="btn-bounce p-4 rounded-2xl bg-rose-100 hover:bg-rose-200 border-2 border-rose-400 text-rose-950 text-center">
+            <div class="text-2xl">🌙</div>
+            <div class="font-black text-sm sm:text-base">Yesterday (V2)</div>
+            <div class="text-[11px] font-bold text-rose-700">Вчера / Прошлое</div>
+          </button>
+        </div>
+      `;
+    }
+
+    function answerEx3(choice) {
+      const cur = ex3Queue[0];
+      if (cur.type === choice) {
+        speak(cur.word);
+        ex3Queue.shift();
+        ex3Done++;
+        showToast('✅ Верно!', 'success');
+        if (ex3Queue.length === 0) markSectionComplete('ex-3');
+        renderEx3();
+      } else {
+        showToast(`❌ Не туда! «${cur.word}» — это ${cur.type === 'V1' ? 'Every day (V1)' : 'Yesterday (V2)'}.`, 'error');
+      }
+    }
+
+    // =========================================================================
+    // EXERCISE 4: MATCHING COLUMNS (6 pairs per batch)
+    // =========================================================================
+    let ex4BatchIdx = 0;
+    let ex4Left = [];
+    let ex4Right = [];
+    let ex4Selected = null;
+    let ex4Matched = [];
+
+    function initEx4() {
+      const start = (ex4BatchIdx * 6) % VERBS.length;
+      const subset = VERBS.slice(start, start + 6);
+      ex4Left = shuffle(subset);
+      ex4Right = shuffle(subset);
+      ex4Selected = null;
+      ex4Matched = [];
+    }
+
+    function nextEx4Batch() {
+      ex4BatchIdx++;
+      initEx4();
+      renderEx4();
+    }
+
+    function renderEx4() {
+      const body = document.getElementById('ex4-body');
+      body.innerHTML = `
+        <div class="grid grid-cols-2 gap-3 sm:gap-6 max-w-xl mx-auto">
+          <div class="space-y-2">
+            <div class="text-center text-xs font-black text-sky-800 bg-sky-100 py-1 rounded-lg">1-я форма (V1)</div>
+            ${ex4Left.map(v => {
+              const done = ex4Matched.includes(v.id);
+              const sel = ex4Selected === v.id;
+              return `
+                <button onclick="pickEx4Left('${v.id}')" ${done ? 'disabled' : ''}
+                  class="w-full py-3 px-3 rounded-xl font-black text-base sm:text-lg border-2 transition-all ${
+                    done ? 'bg-emerald-100 border-emerald-400 text-emerald-800 opacity-60'
+                    : sel ? 'bg-indigo-600 border-indigo-800 text-white scale-[1.03]'
+                    : 'bg-white border-stone-200 hover:border-sky-400 text-stone-800 btn-bounce'
+                  }">
+                  ${v.v1}
+                </button>
+              `;
+            }).join('')}
+          </div>
+          <div class="space-y-2">
+            <div class="text-center text-xs font-black text-rose-800 bg-rose-100 py-1 rounded-lg">2-я форма (V2)</div>
+            ${ex4Right.map(v => {
+              const done = ex4Matched.includes(v.id);
+              return `
+                <button onclick="pickEx4Right('${v.id}')" ${done ? 'disabled' : ''}
+                  class="w-full py-3 px-3 rounded-xl font-black text-base sm:text-lg border-2 transition-all ${
+                    done ? 'bg-emerald-100 border-emerald-400 text-emerald-800 opacity-60'
+                    : 'bg-white border-stone-200 hover:border-rose-400 text-rose-700 btn-bounce'
+                  }">
+                  ${v.v2}
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function pickEx4Left(id) {
+      ex4Selected = id;
+      const v = VERBS.find(x => x.id === id);
+      if (v) speak(v.v1);
+      renderEx4();
+    }
+
+    function pickEx4Right(id) {
+      if (!ex4Selected) {
+        showToast('👈 Сначала нажми на слово слева!', 'info');
+        return;
+      }
+      const v = VERBS.find(x => x.id === id);
+      if (v) speak(v.v2);
+      if (ex4Selected === id) {
+        ex4Matched.push(id);
+        ex4Selected = null;
+        showToast('✅ Точно! Соединили!', 'success');
+        if (ex4Matched.length === ex4Left.length) markSectionComplete('ex-4');
+      } else {
+        ex4Selected = null;
+        showToast('❌ Не та пара, попробуй ещё раз!', 'error');
+      }
+      renderEx4();
+    }
+
+    // =========================================================================
+    // EXERCISE 5: PICTURE QUIZ (6 questions)
+    // =========================================================================
+    let ex5List = [];
+    let ex5Idx = 0;
+
+    function initEx5() {
+      ex5List = shuffle(VERBS).slice(0, 6);
+      ex5Idx = 0;
+    }
+
+    function renderEx5() {
+      const body = document.getElementById('ex5-body');
+      document.getElementById('ex5-counter').textContent = `Вопрос ${Math.min(ex5Idx + 1, 6)} / 6`;
+
+      if (ex5Idx >= ex5List.length) {
+        body.innerHTML = `
+          <div class="text-center py-6 bg-purple-50 rounded-2xl border-2 border-purple-200">
+            <div class="text-4xl mb-2">🖼️🌟</div>
+            <p class="font-black text-purple-900 text-lg mb-3">Все картинки угаданы!</p>
+            <button onclick="initEx5(); renderEx5();" class="btn-bounce px-5 py-2.5 rounded-xl bg-purple-600 text-white font-extrabold text-sm">
+              Новые картинки 🔄
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      const target = ex5List[ex5Idx];
+      const options = shuffle([target, ...shuffle(VERBS.filter(v => v.id !== target.id)).slice(0, 3)]);
+
+      body.innerHTML = `
+        <div class="max-w-xs mx-auto p-3 rounded-2xl border-2 mb-4 text-center" style="background-color: ${target.wash}; border-color: ${target.accent}40;">
+          <div class="w-40 h-28 mx-auto">${target.svg}</div>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
+          ${options.map(opt => `
+            <button onclick="answerEx5('${opt.id}')"
+              class="btn-bounce py-3 px-3 rounded-xl bg-white hover:bg-purple-50 border-2 border-purple-200 font-black text-sm sm:text-base text-stone-800">
+              ${opt.v1} – <span class="text-rose-600">${opt.v2}</span>
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function answerEx5(id) {
+      const target = ex5List[ex5Idx];
+      if (id === target.id) {
+        speak(`${target.v1} ... ${target.v2}`);
+        showToast(`🌟 Верно! ${target.v1} – ${target.v2} (${target.ruShort})`, 'success');
+        ex5Idx++;
+        if (ex5Idx >= ex5List.length) markSectionComplete('ex-5');
+        renderEx5();
+      } else {
+        showToast('❌ Посмотри внимательнее на рисунок!', 'error');
+      }
+    }
+
+    // =========================================================================
+    // EXERCISE 6: LETTER TILES SPELLING (8 words)
+    // =========================================================================
+    const SPELL_IDS = ['go', 'come', 'drink', 'can', 'say', 'eat', 'take', 'give'];
+    let ex6List = [];
+    let ex6Idx = 0;
+    let ex6Pool = [];
+    let ex6Built = [];
+
+    function initEx6() {
+      ex6List = shuffle(VERBS.filter(v => SPELL_IDS.includes(v.id)));
+      ex6Idx = 0;
+      setupEx6Word();
+    }
+
+    function setupEx6Word() {
+      if (ex6Idx >= ex6List.length) return;
+      const target = ex6List[ex6Idx];
+      ex6Pool = shuffle(target.v2.split('').map((ch, i) => ({ id: i, ch, used: false })));
+      ex6Built = [];
+    }
+
+    function renderEx6() {
+      const body = document.getElementById('ex6-body');
+      document.getElementById('ex6-counter').textContent = `Слово ${Math.min(ex6Idx + 1, ex6List.length)} / ${ex6List.length}`;
+
+      if (ex6Idx >= ex6List.length) {
+        body.innerHTML = `
+          <div class="text-center py-6 bg-teal-50 rounded-2xl border-2 border-teal-200">
+            <div class="text-4xl mb-2">🔤🏆</div>
+            <p class="font-black text-teal-900 text-lg mb-3">Все слова собраны без ошибок!</p>
+            <button onclick="initEx6(); renderEx6();" class="btn-bounce px-5 py-2.5 rounded-xl bg-teal-600 text-white font-extrabold text-sm">
+              Собрать ещё раз 🔄
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      const target = ex6List[ex6Idx];
+      body.innerHTML = `
+        <div class="text-center mb-3">
+          <span class="text-sm sm:text-base font-extrabold text-stone-600">${target.ruShort} (вчера): </span>
+          <span class="text-lg sm:text-xl font-black text-teal-800">${target.v1} → ?</span>
+        </div>
+
+        <!-- Slots -->
+        <div class="flex justify-center gap-1.5 min-h-[52px] p-2.5 rounded-2xl bg-teal-50/70 border-2 border-dashed border-teal-300 max-w-sm mx-auto mb-3">
+          ${target.v2.split('').map((_, i) => {
+            const tile = ex6Built[i];
+            return tile
+              ? `<button onclick="unpickEx6(${i})" class="w-10 h-11 rounded-xl bg-teal-600 text-white font-black text-lg shadow-sm">${tile.ch}</button>`
+              : `<div class="w-10 h-11 rounded-xl bg-white border-2 border-teal-200"></div>`;
+          }).join('')}
+        </div>
+
+        <!-- Scrambled Letters -->
+        <div class="flex flex-wrap justify-center gap-2 max-w-sm mx-auto mb-3">
+          ${ex6Pool.map(t => `
+            <button onclick="pickEx6(${t.id})" ${t.used ? 'disabled' : ''}
+              class="w-11 h-11 rounded-xl font-black text-lg border-2 transition-all ${
+                t.used ? 'bg-stone-100 border-stone-200 text-stone-300' : 'btn-bounce bg-amber-100 hover:bg-amber-200 border-amber-400 text-amber-950'
+              }">
+              ${t.ch}
+            </button>
+          `).join('')}
+        </div>
+
+        <div class="text-center">
+          <button onclick="setupEx6Word(); renderEx6();" class="text-xs font-extrabold text-stone-500 hover:text-stone-800 underline">
+            Очистить буквы
+          </button>
+        </div>
+      `;
+    }
+
+    function pickEx6(id) {
+      const tile = ex6Pool.find(t => t.id === id);
+      if (!tile || tile.used) return;
+      tile.used = true;
+      ex6Built.push(tile);
+
+      const target = ex6List[ex6Idx];
+      if (ex6Built.length === target.v2.length) {
+        const word = ex6Built.map(t => t.ch).join('');
+        if (word === target.v2) {
+          speak(target.v2);
+          showToast(`🌟 Супер! Слово «${target.v2}» собрано!`, 'success');
+          ex6Idx++;
+          if (ex6Idx >= ex6List.length) markSectionComplete('ex-6');
+          else setupEx6Word();
+        } else {
+          showToast('❌ Буквы не в том порядке — нажми на букву сверху, чтобы убрать!', 'error');
+        }
+      }
+      renderEx6();
+    }
+
+    function unpickEx6(slotIdx) {
+      const rem = ex6Built.splice(slotIdx, 1)[0];
+      if (rem) rem.used = false;
+      renderEx6();
+    }
+
+    // =========================================================================
+    // EXERCISE 7: FILL IN THE SENTENCE (8 sentences with 3 choices)
+    // =========================================================================
+    let ex7Items = [];
+
+    function initEx7() {
+      const raw = [
+        { text: 'Yesterday I ___ up at 7 o’clock.', correct: 'got', opts: ['get', 'got', 'getted'], solved: false },
+        { text: 'Every day I ___ warm milk.', correct: 'drink', opts: ['drink', 'drank', 'drinked'], solved: false },
+        { text: 'Yesterday she ___ a big red apple.', correct: 'ate', opts: ['eat', 'ate', 'eated'], solved: false },
+        { text: 'Yesterday we ___ to the park.', correct: 'went', opts: ['go', 'went', 'goed'], solved: false },
+        { text: 'Yesterday Mum ___ me a present.', correct: 'gave', opts: ['give', 'gave', 'gived'], solved: false },
+        { text: 'Every day my friends ___ to my house.', correct: 'come', opts: ['come', 'came', 'comed'], solved: false },
+        { text: 'Yesterday I ___ a funny dog.', correct: 'saw', opts: ['see', 'saw', 'seed'], solved: false },
+        { text: 'Yesterday he ___ jump very high!', correct: 'could', opts: ['can', 'could', 'canned'], solved: false }
+      ];
+      ex7Items = shuffle(raw);
+    }
+
+    function renderEx7() {
+      const body = document.getElementById('ex7-body');
+      body.innerHTML = ex7Items.map((item, idx) => {
+        const display = item.solved
+          ? item.text.replace('___', `<span class="px-2.5 py-0.5 rounded-lg bg-emerald-200 text-emerald-950 font-black">${item.correct}</span>`)
+          : item.text.replace('___', `<span class="px-3 py-0.5 rounded-lg bg-amber-200 text-amber-900 font-black">___</span>`);
+
+        return `
+          <div class="p-3.5 rounded-2xl border-2 ${item.solved ? 'bg-emerald-50/70 border-emerald-300' : 'bg-white border-stone-200'} flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <p class="text-sm sm:text-base font-extrabold text-stone-800">${idx + 1}. ${display}</p>
+            <div class="flex items-center gap-1.5 shrink-0">
+              ${item.solved
+                ? `<span class="text-xs font-black text-emerald-700 px-2.5 py-1">✅ Готово</span>`
+                : item.opts.map(opt => `
+                    <button onclick="answerEx7(${idx}, '${opt}')"
+                      class="btn-bounce px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-600 hover:text-white border border-indigo-300 text-indigo-900 font-black text-xs sm:text-sm">
+                      ${opt}
+                    </button>
+                  `).join('')
+              }
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function answerEx7(idx, opt) {
+      const item = ex7Items[idx];
+      if (opt === item.correct) {
+        item.solved = true;
+        speak(item.text.replace('___', item.correct));
+        showToast('✅ Отлично! Правильное слово!', 'success');
+        if (ex7Items.every(x => x.solved)) markSectionComplete('ex-7');
+        renderEx7();
+      } else {
+        showToast('❌ Подумай: если Yesterday — нужна 2-я форма, если Every day — 1-я!', 'error');
+      }
+    }
+
+    // =========================================================================
+    // EXERCISE 8: MISTAKE HUNTER (8 items: True vs False)
+    // =========================================================================
+    let ex8Items = [];
+
+    function initEx8() {
+      ex8Items = shuffle([
+        { label: 'go – goed', isTrue: false, fix: 'go – went', done: false },
+        { label: 'see – saw', isTrue: true, fix: 'see – saw', done: false },
+        { label: 'eat – eated', isTrue: false, fix: 'eat – ate', done: false },
+        { label: 'can – could', isTrue: true, fix: 'can – could', done: false },
+        { label: 'drink – drinked', isTrue: false, fix: 'drink – drank', done: false },
+        { label: 'put – putted', isTrue: false, fix: 'put – put', done: false },
+        { label: 'take – took', isTrue: true, fix: 'take – took', done: false },
+        { label: 'give – gave', isTrue: true, fix: 'give – gave', done: false }
+      ]);
+    }
+
+    function renderEx8() {
+      const body = document.getElementById('ex8-body');
+      body.innerHTML = ex8Items.map((item, idx) => `
+        <div class="p-3.5 rounded-2xl border-2 ${item.done ? 'bg-emerald-50/70 border-emerald-300' : 'bg-white border-stone-200'} flex items-center justify-between gap-2">
+          <div>
+            <div class="text-base sm:text-lg font-black text-stone-800">${item.label}</div>
+            ${item.done ? `<div class="text-xs font-extrabold text-emerald-700">Правильно: ${item.fix}</div>` : ''}
+          </div>
+          ${item.done
+            ? `<span class="text-lg">✅</span>`
+            : `<div class="flex gap-1.5">
+                <button onclick="answerEx8(${idx}, true)" class="btn-bounce px-2.5 py-1.5 rounded-xl bg-emerald-100 hover:bg-emerald-500 hover:text-white text-emerald-900 font-black text-xs border border-emerald-300">✅ Верно</button>
+                <button onclick="answerEx8(${idx}, false)" class="btn-bounce px-2.5 py-1.5 rounded-xl bg-rose-100 hover:bg-rose-500 hover:text-white text-rose-900 font-black text-xs border border-rose-300">❌ Ошибка!</button>
+              </div>`
+          }
+        </div>
+      `).join('');
+    }
+
+    function answerEx8(idx, userSaysTrue) {
+      const item = ex8Items[idx];
+      if (userSaysTrue === item.isTrue) {
+        item.done = true;
+        speak(item.fix.replace('–', '...'));
+        showToast(item.isTrue ? `✅ Верно! «${item.fix}» написано правильно!` : `🕵️ Поймал ошибку! Правильно: «${item.fix}»!`, 'success');
+        if (ex8Items.every(x => x.done)) markSectionComplete('ex-8');
+        renderEx8();
+      } else {
+        showToast(item.isTrue ? '❌ На самом деле тут ошибки нет!' : `❌ Тут ошибка! Нельзя добавлять -ed, правильно: «${item.fix}».`, 'error');
+      }
+    }
+
+    // =========================================================================
+    // EXERCISE 9: TYPE V2 (All 12 verbs keyboard practice)
+    // =========================================================================
+    const ex9Solved = {};
+
+    function renderEx9() {
+      const body = document.getElementById('ex9-body');
+      const solvedCount = Object.keys(ex9Solved).length;
+      document.getElementById('ex9-counter').textContent = `${solvedCount} / 12`;
+
+      body.innerHTML = VERBS.map(v => {
+        const done = !!ex9Solved[v.id];
+        return `
+          <div class="p-3 rounded-2xl border-2 ${done ? 'bg-emerald-50/80 border-emerald-300' : 'bg-white border-stone-200'} flex items-center justify-between gap-2">
+            <div class="min-w-0">
+              <div class="text-sm sm:text-base font-black text-stone-800">${v.v1} <span class="text-xs font-bold text-stone-400">(${v.ruShort})</span></div>
+            </div>
+            ${done
+              ? `<div class="px-3 py-1 rounded-xl bg-emerald-200 text-emerald-950 font-black text-sm sm:text-base">✅ ${v.v2}</div>`
+              : `<form onsubmit="event.preventDefault(); checkEx9('${v.id}');" class="flex items-center gap-1">
+                  <input id="in-ex9-${v.id}" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                    placeholder="V2..."
+                    class="w-24 sm:w-28 text-center font-black text-sm sm:text-base py-1.5 px-2 rounded-xl border-2 border-amber-300 focus:border-amber-600 focus:outline-none bg-amber-50/40" />
+                  <button type="button" onclick="hintEx9('${v.id}')" title="Подсказка первой буквы"
+                    class="btn-bounce px-2 py-1.5 rounded-xl bg-amber-100 text-amber-900 font-bold text-xs border border-amber-300">💡</button>
+                  <button type="submit"
+                    class="btn-bounce px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-black text-xs">OK</button>
+                </form>`
+            }
+          </div>
+        `;
+      }).join('');
+    }
+
+    function hintEx9(id) {
+      const v = VERBS.find(x => x.id === id);
+      const inp = document.getElementById(`in-ex9-${id}`);
+      if (v && inp) {
+        inp.value = v.v2[0];
+        inp.focus();
+      }
+    }
+
+    function checkEx9(id) {
+      const v = VERBS.find(x => x.id === id);
+      const inp = document.getElementById(`in-ex9-${id}`);
+      if (!v || !inp) return;
+      const val = inp.value.trim().toLowerCase().replace(/\s+/g, ' ');
+      if (val === v.v2) {
+        ex9Solved[id] = true;
+        speak(`${v.v1} ... ${v.v2}`);
+        showToast(`🌟 Верно! ${v.v1} – ${v.v2}!`, 'success');
+        if (Object.keys(ex9Solved).length === VERBS.length) markSectionComplete('ex-9');
+        renderEx9();
+      } else {
+        inp.classList.add('animate-shake', 'border-rose-500');
+        setTimeout(() => inp.classList.remove('animate-shake', 'border-rose-500'), 400);
+        showToast(`❌ Проверь буквы! Подсказка: начинается на «${v.v2[0]}».`, 'error');
+      }
+    }
+
+    // =========================================================================
+    // EXERCISE 10: SENTENCE TYPING DICTATION (8 sentences)
+    // =========================================================================
+    const DICTATION_SENTENCES = [
+      { id: 'd1', before: 'Yesterday I', after: 'to school.', hint: 'go', answer: 'went' },
+      { id: 'd2', before: 'Yesterday I', after: 'up at 7 o’clock.', hint: 'get', answer: 'got' },
+      { id: 'd3', before: 'Yesterday she', after: 'a red apple.', hint: 'eat', answer: 'ate' },
+      { id: 'd4', before: 'Yesterday my cat', after: 'warm milk.', hint: 'drink', answer: 'drank' },
+      { id: 'd5', before: 'Yesterday Tim', after: 'a green book.', hint: 'take', answer: 'took' },
+      { id: 'd6', before: 'Yesterday Grandma', after: 'to our house.', hint: 'come', answer: 'came' },
+      { id: 'd7', before: 'Yesterday he', after: '"Thank you!"', hint: 'say', answer: 'said' },
+      { id: 'd8', before: 'Yesterday I', after: 'a funny puppy.', hint: 'see', answer: 'saw' }
+    ];
+    const ex10Solved = {};
+
+    function renderEx10() {
+      const body = document.getElementById('ex10-body');
+      const count = Object.keys(ex10Solved).length;
+      document.getElementById('ex10-counter').textContent = `${count} / ${DICTATION_SENTENCES.length}`;
+
+      body.innerHTML = DICTATION_SENTENCES.map((item, idx) => {
+        const done = !!ex10Solved[item.id];
+        return `
+          <form onsubmit="event.preventDefault(); checkEx10('${item.id}');"
+            class="p-3.5 rounded-2xl border-2 ${done ? 'bg-emerald-50/80 border-emerald-300' : 'bg-white border-stone-200'} flex flex-wrap items-center justify-between gap-2">
+            <div class="text-sm sm:text-base font-extrabold text-stone-800 flex flex-wrap items-center gap-1.5">
+              <span>${idx + 1}. ${item.before}</span>
+              ${done
+                ? `<span class="px-2.5 py-0.5 rounded-lg bg-emerald-200 text-emerald-950 font-black">${item.answer}</span>`
+                : `<input id="in-ex10-${item.id}" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                    placeholder="..."
+                    class="w-24 sm:w-28 text-center font-black text-sm sm:text-base py-1 px-2 rounded-xl border-2 border-indigo-300 focus:border-indigo-600 focus:outline-none bg-indigo-50/40" />`
+              }
+              <span>${item.after}</span>
+              <span class="text-xs font-bold text-stone-400">(${item.hint})</span>
+            </div>
+
+            ${done
+              ? `<span class="text-xs font-black text-emerald-700">✅ Отлично!</span>`
+              : `<button type="submit" class="btn-bounce px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs sm:text-sm">
+                  Проверить
+                </button>`
+            }
+          </form>
+        `;
+      }).join('');
+    }
+
+    function checkEx10(id) {
+      const item = DICTATION_SENTENCES.find(x => x.id === id);
+      const inp = document.getElementById(`in-ex10-${id}`);
+      if (!item || !inp) return;
+      const val = inp.value.trim().toLowerCase();
+      if (val === item.answer) {
+        ex10Solved[id] = true;
+        speak(`${item.before} ${item.answer} ${item.after}`);
+        showToast(`🏆 Браво! «${item.before} ${item.answer} ${item.after}»`, 'success');
+        if (Object.keys(ex10Solved).length === DICTATION_SENTENCES.length) {
+          markSectionComplete('ex-10');
+          showToast('🎉 ПОЗДРАВЛЯЕМ! Весь диктант выполнен на 5+!', 'success');
+        }
+        renderEx10();
+      } else {
+        inp.classList.add('animate-shake', 'border-rose-500');
+        setTimeout(() => inp.classList.remove('animate-shake', 'border-rose-500'), 400);
+        showToast(`❌ Вспомни 2-ю форму от глагола «${item.hint}»!`, 'error');
+      }
+    }
+
+    // =========================================================================
+    // INITIALIZE ALL 10 SECTIONS ON PAGE LOAD
+    // =========================================================================
+    window.onload = function () {
+      renderCatalog();
+      renderEx1();
+      initEx2(); renderEx2();
+      initEx3(); renderEx3();
+      initEx4(); renderEx4();
+      initEx5(); renderEx5();
+      initEx6(); renderEx6();
+      initEx7(); renderEx7();
+      initEx8(); renderEx8();
+      renderEx9();
+      renderEx10();
+    };
+  </script>
+</body>
+</html>
