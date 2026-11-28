@@ -11,7 +11,7 @@ function qChoice(root,data){let el=document.getElementById(root);el.innerHTML=da
 function checkChoice(id){let items=$$('#'+id+' .exercise');let right=0;for(let el of items){const b=$('.selected',el);$$('.choice',el).forEach(x=>x.classList.remove('bad','good'));if(b){let ok=norm(b.dataset.val)===norm(el.dataset.answer);b.classList.add(ok?'good':'bad');if(ok)right++}}finish(id,right,items.length)}
 function qInput(root,data){let el=document.getElementById(root);el.innerHTML=data.map((x,i)=>`<div class="exercise"><strong>${i+1}. ${x.prompt}</strong><div class="row"><input class="answer" aria-label="Answer ${i+1}" autocomplete="off" autocapitalize="off" spellcheck="false" data-ans="${x.answer}" placeholder="Write here">${x.hint?`<span class="mini">${x.hint}</span>`:''}</div></div>`).join('');}
 function checkInput(id){let a=$$('#'+id+' .answer');let n=0;a.forEach(x=>{let ok=x.dataset.ans.split('|').map(norm).includes(norm(x.value));x.classList.toggle('good',ok);x.classList.toggle('bad',!ok);if(ok)n++});finish(id,n,a.length)}
-window.addEventListener('DOMContentLoaded',()=>{wordsGrid();refresh()});
+window.addEventListener('DOMContentLoaded',()=>{refresh()});
 </script><script>
 window.addEventListener('DOMContentLoaded',()=>{
 qChoice('hwlisten', W.map((w,i)=>({prompt:`<span class="iconchoices">${w.pic}</span> ${w.ru}`,answer:w.en,options:[W[(i+2)%10].en,w.en,W[(i+5)%10].en]})));
